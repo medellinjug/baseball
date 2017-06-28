@@ -148,6 +148,7 @@ var app = angular.module('demo', [])
 	//Create a new or Update Strategy
     $scope.submitStrategy = function(){
 
+
         var addStrategy ={
                 height:$scope.height,
                 type:$scope.type
@@ -156,6 +157,7 @@ var app = angular.module('demo', [])
         var newStrategy = true;
         var id;
         if ($scope.id == null){
+
 
             res = $http.post($scope.urlServiceStrategy, JSON.stringify(addStrategy), {
                 headers: { 'Content-Type': 'application/json'}
@@ -166,6 +168,8 @@ var app = angular.module('demo', [])
             res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(addStrategy), {
                 headers: { 'Content-Type': 'application/json'}});
         }
+
+
 
         res.success(function(data, status, headers, config) {
             $scope.message = data;
