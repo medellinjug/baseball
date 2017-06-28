@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by Amy on 24/06/17.
+ * Created by Hilmer on 24/06/17.
  */
 public class StrategyController {
 

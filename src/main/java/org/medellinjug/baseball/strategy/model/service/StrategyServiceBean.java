@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Amy on 25/06/17.
+ * Created by Hilmer on 25/06/17.
+ * MedellinJUG.org
  */
 public class StrategyServiceBean {
 
@@ -95,36 +96,34 @@ public class StrategyServiceBean {
 
     public Strategy processStrategy(Long id, Strategy strategy){
 
-        strategy = this.getStrategy(id);
+
+
+       // strategy = this.getStrategy(id);
+
 
 
         strategy.calculateSize();
-        //System.out.println(strategy);
+
         strategy.getStrategyPlayList().forEach(p->p.createPlayCodess());
 
 
         List<PlayCode> playCodeList
                 = strategy.getStrategyPlayList().stream().map(p->p.getPlayCodeList()).flatMap(q->q.stream()).collect(Collectors.toList());
 
-        //playCodeList.forEach(System.out::println);
 
         Collections.shuffle(playCodeList);
-
-        //playCodeList.forEach(System.out::println);
 
 
 
         List<List<PlayCode>> playCodeMatrix =  new ArrayList<>();
-        //System.out.println("playCodeList  " + playCodeList.size());
-        for(int it=0; it < playCodeList.size(); ){
+         for(int it=0; it < playCodeList.size(); ){
 
             int toIndex = it + strategy.getWidth().intValue();
 
             if(toIndex>playCodeList.size()){
                 toIndex = playCodeList.size();
             }
-            //System.out.println("get:: From= " + it + " to " + toIndex);
-            List<PlayCode> playCodeListRow = playCodeList.subList(it, toIndex);
+             List<PlayCode> playCodeListRow = playCodeList.subList(it, toIndex);
             playCodeMatrix.add(playCodeListRow);
             it = toIndex;
         }
@@ -142,7 +141,7 @@ public class StrategyServiceBean {
 
 
 
-       // System.out.println("MATRIX results: " + strategy.getId());
+
         if(true) {
 
             String defaultColor = "#FFFFFF";
@@ -181,6 +180,22 @@ public class StrategyServiceBean {
 
             strategy.setStrategyMatrix(strategyMatrix);
         }
+
+
+
+        int matchIndex = -1;
+
+        matchIndex = eList.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .map(e -> eList.indexOf(e))
+                .orElse(matchIndex);
+
+        if (matchIndex > -1) {
+            eList.set(matchIndex, strategy);
+
+        }
+
 
 
 

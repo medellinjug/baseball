@@ -6,7 +6,8 @@ import java.util.Properties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
- * Created by Amy on 25/06/17.
+ * Created by Hilmer on 25/06/17.
+ * MedellinJUG.org
  */
 @SpringBootApplication
 public class StrategyApplication {

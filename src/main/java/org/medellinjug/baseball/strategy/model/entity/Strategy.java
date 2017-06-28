@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Amy on 24/06/17.
+ * Created by Hilmer on 24/06/17.
+ * MedellinJUG.org
  */
 public class Strategy{
 

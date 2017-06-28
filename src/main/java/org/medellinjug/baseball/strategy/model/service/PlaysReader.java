@@ -11,7 +11,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Created by Amy on 25/06/17.
+ * Created by Hilmer on 25/06/17.
+ * MedellinJUG.org
  */
 public class PlaysReader {
     private static final CopyOnWriteArrayList<Play> eList = new CopyOnWriteArrayList<>();

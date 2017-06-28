@@ -93,7 +93,7 @@
     <!--FORM1-->
 
     <div class="col-sm-5 col-md-offset-2" ng-show="showNewStrategy">
-        <div class="panel panel-info " class="click-element animate-show">
+        <div class="panel panel-info" class="click-element animate-show">
 
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -111,7 +111,7 @@
                     <div class="form-group" ng-class="{ 'has-error': form.height.$invalid && form.$submitted}">
                         <label class="control-label col-xs-3" for="height">Height:</label>
                         <div class="col-xs-5">
-                            <input type="text" id="height" name="height" ng-model="height" value="" class="form-control"
+                            <input type="text" id="height" name="height" ng-model="height" value="" class="form-control input-sm"
                                    required>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                         <label class="control-label col-xs-3" for="type">Type:</label>
                         <div class="col-xs-5">
 
-                            <select id="type" name="type" value="type" ng-model="type" class="form-control" required>
+                            <select id="type" name="type" value="type" ng-model="type" class="form-control input-sm" required>
                                 <option value="HIT">Hit</option>
                                 <option value="PITCH">Pitch</option>
 
@@ -129,7 +129,7 @@
                         </div>
                     </div>
 
-                    <br><br>
+                    <br>
                     <div style=" text-align: center;">
 
 
@@ -147,7 +147,7 @@
     <!--GENERATOR-->
     <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyPlayList">
 
-        <form class="form-horizontal" name="form2" novalidate ng-submit="form2.$valid && submitStrategy()">
+        <form class="form-horizontal" name="form2" novalidate ng-submit="form2.$valid && generateStrategy(strategy)">
             <div class="panel panel-info " class="click-element animate-show">
 
                 <div class="panel-heading">
@@ -179,18 +179,16 @@
                         </div>
                     </div>
 
-                    <br><br>
+                    <br>
 
                     <div style=" text-align: center;">
 
 
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
-                               ng-click="showDivs(true)">
+
                         <input type="submit" tabindex="-1" class="btn btn-success" value="Generate">
+                        <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                               ng-click="goStrategy()">
 
-
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Modify"
-                               ng-click="sendFull(strategy)"/>
 
 
                     </div>
@@ -202,13 +200,14 @@
 
 
 
-            <table class="table-bordered table-striped table table-hover">
+                <div class="panel panel-info" class="click-element animate-show">
+            <table class="table-bordered table table-hover">
                 <thead>
-                <tr>
+                <tr class="info">
                     <th>Code</th>
                     <th>Name</th>
                     <th>No. of codes</th>
-                    <th></th>
+
 
                 </tr>
                 </thead>
@@ -223,24 +222,23 @@
 
                     </td>
                     <td>
+                        <div ng-class="{ 'has-error': strategyPlay.quantity==null && form2.$submitted}">
+                        <div class="col-xs-3">
 
-
-                        <div><input type="text" ng-model="strategyPlay.quantity" required
-                                    ng-class="{ 'has-error': strategyPlay.quantity.$invalid && form2.$submitted}"
-                        /></div>
+                            <input type="text" name="quantity" ng-model="strategyPlay.quantity" class="form-control input-sm" required/>
+                        </div>
+                        </div>
                     </td>
 
-                    <td>
 
 
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Update"
-                               ng-click="update(strategyPlay)"/>
-
-
-                    </td>
                 </tr>
                 </tbody>
             </table>
+
+
+
+                </div>
 
 
         </form>
@@ -248,6 +246,9 @@
 
 
     <!--MATRIX-->
+
+
+
     <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyResult">
         <div class="panel panel-info " class="click-element animate-show">
 
@@ -287,13 +288,13 @@
                     </div>
 
 
-                    <br><br>
+                    <br>
 
                     <div style=" text-align: center;">
 
 
                         <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
-                               ng-click="showDivs(true)">
+                               ng-click="goStrategy()">
 
 
                     </div>
@@ -303,10 +304,6 @@
 
 
         </div>
-
-
-
-
 
 
             <table id="matrix" class="table-bordered table-striped table-condensed table-hover">
@@ -418,7 +415,6 @@
             </form>
         </div>
     </div>
-
 
 
 

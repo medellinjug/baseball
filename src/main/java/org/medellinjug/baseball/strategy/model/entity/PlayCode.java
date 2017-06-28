@@ -3,7 +3,8 @@ package org.medellinjug.baseball.strategy.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Created by Amy on 24/06/17.
+ * Created by Hilmer on 24/06/17.
+ * MedellinJUG.org
  */
 public class PlayCode {
     private StrategyPlay strategyPlay;

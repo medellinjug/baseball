@@ -138,6 +138,11 @@ var app = angular.module('demo', [])
 
         $scope.height = "";
         $scope.type = null;
+
+        $scope.id = null;
+
+
+         $scope.form.$setPristine();
 	}
 
 	//Create a new or Update Strategy
@@ -231,8 +236,8 @@ var app = angular.module('demo', [])
 		});
 
 		$scope.showNewStrategy = false;
-                	$scope.showStrategyPlayList = false;
-                	$scope.showStrategyResult = true;
+        $scope.showStrategyPlayList = false;
+        $scope.showStrategyResult = true;
 
 	}
 
@@ -263,7 +268,7 @@ var app = angular.module('demo', [])
 
 	}
 
-		$scope.showDetailStrategyPlay = function(){
+	$scope.showDetailStrategyPlay = function(){
     		$scope.showStrategyPlay = true;
 
     		/*$scope.id = $scope.play.id;
@@ -313,12 +318,59 @@ var app = angular.module('demo', [])
 
     }
 
-    $scope.sendFull = function(strategy){
-                    alert("full" + strategy);
+    $scope.generateStrategy = function(strategy){
+
+
                     $scope.modifyField = false;
     				$scope.viewField = false;
 
-    			};
+
+        var genStrategy ={
+          /*strategy:$scope.strategy,*/
+            id:$scope.id,
+            strategy:$scope.strategy,
+            date:$scope.strategy.date,
+            width:$scope.strategy.width,
+            height:$scope.strategy.height,
+            strategyPlayList:$scope.strategy.strategyPlayList
+         };
+
+
+        var res;
+        res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(genStrategy), {
+                        headers: { 'Content-Type': 'application/json'}
+                        });
+
+
+
+
+ //$scope.getStrategyById($scope.id);
+         res.success(function(data, status, headers, config) {
+            $scope.message = data;
+            $scope.showStrategyPlay = false;
+            $scope.getStrategyById($scope.id);
+
+
+           // $("#strategyPlayModal").modal('hide');
+        });
+
+
+
+        res.error(function(data, status, headers, config) {
+
+            alert( "failure message: " + JSON.stringify({data: data}));
+        });
+
+
+
+        $scope.showNewStrategy = false;
+        $scope.showStrategyPlayList = false;
+        $scope.showStrategyResult = true;
+
+
+
+
+      };
 
 
 

@@ -1,7 +1,8 @@
 package org.medellinjug.baseball.strategy.model.entity;
 
 /**
- * Created by Amy on 24/06/17.
+ * Created by Hilmer on 24/06/17.
+ * MedellinJUG.org
  */
 public class Play {
     public enum Type {PITCH, HIT}

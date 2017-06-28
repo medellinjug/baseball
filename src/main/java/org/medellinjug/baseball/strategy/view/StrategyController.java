@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 /**
- * Created by Amy on 25/06/17.
+ * Created by Hilmer on 25/06/17.
+ * MedellinJUG.org
  */
 @CrossOrigin
 @RestController
@@ -113,10 +114,11 @@ public class StrategyController {
     public ResponseEntity processStrategy(@PathVariable Long id, @RequestBody Strategy strategy){
 
 
+
         Strategy currentStrategy = strategyServiceBean.processStrategy(id, strategy);
-        if (strategy != null) {
-            //return new ResponseEntity<Strategy>(currentStrategy, HttpStatus.OK);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+        if (currentStrategy != null) {
+            return new ResponseEntity<Strategy>(currentStrategy, HttpStatus.OK);
+            //return new ResponseEntity<>(null, HttpStatus.OK);
 
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -160,7 +162,7 @@ public class StrategyController {
 
     // Update a strategy
     @RequestMapping(method = RequestMethod.PUT, value = "/strategy/play/{idStrategy}")
-    public ResponseEntity update(@PathVariable Long idStrategy, @RequestBody StrategyPlay strategyPlay) {
+    public ResponseEntity updateStrategyPlay(@PathVariable Long idStrategy, @RequestBody StrategyPlay strategyPlay) {
 
         if (strategyServiceBean.updateStrategyPlay(idStrategy, strategyPlay)) {
             return new ResponseEntity<>(null, HttpStatus.OK);
@@ -168,9 +170,6 @@ public class StrategyController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 
 
 
