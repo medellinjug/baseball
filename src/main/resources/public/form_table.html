@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table td, table th{
+
+    border:solid 1px red;
+    padding:5px;
+}
+
+    </style>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+
+
+<div ng-app="addApp">
+
+    <div class="wraper" ng-controller="modifyCtrl">
+        <form  name="form2" novalidate ng-submit="form2.$valid && updateFull()">
+            <table>
+                <thead>
+                <tr>
+                    <th>Name:</th>
+                    <th>Date Of Birth</th>
+                    <th>Email Id</th>
+                    <th>Phone No.</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="tableData in tabelsData">
+
+                    <td>
+
+                        <div ng-hide="viewField">{{tableData.name | uppercase}}</div>
+                        <div ng-show="modifyField" ng-class="{ 'has-error': tableData.name.$invalid && form2.$submitted}"><input type="text" ng-model="tableData.name"
+
+                                                                                                                                 required
+
+
+                        /></div>
+                    </td>
+                    <td>
+                        <div ng-hide="viewField">{{tableData.dob}}</div>
+                        <div ng-show="modifyField"><input type="text" ng-model="tableData.dob" required/></div>
+                    </td>
+                    <td>
+                        <div ng-hide="viewField">{{tableData.emailId}}</div>
+                        <div ng-show="modifyField"><input type="text" ng-model="tableData.emailId"/></div>
+                    </td>
+                    <td>
+                        <div ng-hide="viewField">{{tableData.phone}}</div>
+                        <div ng-show="modifyField"><input type="text" ng-model="tableData.phone"/></div>
+                    </td>
+                    <td>
+                        <div ng-hide="viewField">{{tableData.address}}</div>
+                        <div ng-show="modifyField">
+                            <textarea ng-model="tableData.address"></textarea>
+                        </div>
+                    </td>
+                    <td>
+                        <button ng-hide="viewField" ng-click="modify(tableData)">Modify</button>
+                        <button ng-show="modifyField" ng-click="update(tableData)">Update</button>
+                        <button ng-hide="viewField">Add</button>
+                        <button ng-hide="viewField">Remove</button>
+
+                        <input type="button" tabindex="-1" class="btn btn-default" value="Modify"
+                               ng-click="modify(tableData)"/>
+
+                    </td>
+
+
+                </tr>
+                </tbody>
+            </table>
+
+            <div style=" text-align: center;">
+
+
+
+                <input type="submit" tabindex="-1" class="btn btn-success" value="Generate">
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+<script type="text/javascript">
+        		var app = angular.module('addApp', []);
+
+
+
+		app.controller('modifyCtrl', ['$scope', function($scope){
+			$scope.tabelsData= [
+				{'name':'rohit', 'dob':'15-august-1985', 'emailId':'rohit@rohit.com', 'phone':'9999999999', 'address':'Delhi Rohini', 'id':'0' },
+				{'name':'aman', 'dob':'26-july-1975', 'emailId':'haryanat@hr.com', 'phone':'9874563210', 'address':'Haryana Sonepat', 'id':'1' },
+				{'name':'devraj', 'dob':'27-march-1980', 'emailId':'punjab@punjab.com', 'phone':'7410258963', 'address':'Punjab AmritSar', 'id':'2' }
+			];
+
+	$scope.modifyField = true;
+				$scope.viewField = true;
+
+			$scope.modify = function(tableData){
+
+				$scope.modifyField = true;
+				$scope.viewField = true;
+			};
+
+
+			$scope.update = function(tableData){
+
+				$scope.modifyField = false;
+				$scope.viewField = false;
+			};
+
+
+			$scope.updateFull = function(){
+                alert("full");
+                $scope.modifyField = false;
+				$scope.viewField = false;
+
+			};
+
+		}]);
+
+
+</script>
+</body>
+</html>
