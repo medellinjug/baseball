@@ -98,15 +98,11 @@
         <div class="row">
             <div class="peopleItem col-sm-3" ng-repeat="play in playList" ng-click="getPlayById(play.id)"
                  style="cursor: pointer">
-                <div class="photos" ng-show="emp.photo != null && emp.photo.length != 0"><img
-                        src="data:image/png;base64, {{emp.photo}}" style="width:120px; height:120px"></img></div>
-                <div class="photos" ng-show="emp.photo == null || emp.photo.length == 0"><img src="nopic.png"
-                                                                                              style="width:120px; height:120px"></img>
-                </div>
+
                 <div class="peopleContent">
                     <h4>{{play.code}} {{play.name}}</h4>
                     {{play.type}}<br>
-                    <small>{{play.id}}</small>
+
                 </div>
             </div>
         </div>

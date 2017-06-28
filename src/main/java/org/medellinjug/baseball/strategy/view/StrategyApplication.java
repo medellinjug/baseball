@@ -32,5 +32,7 @@ public class StrategyApplication {
         app.setDefaultProperties(myProps);
         app.run(args);
 
+        System.out.println("http://localhost:8080/index.html");
+
     }
 }
