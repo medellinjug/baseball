@@ -132,7 +132,7 @@ public class StrategyServiceBean {
 
         for(List<PlayCode> playCodeList1:playCodeMatrix){
 
-            int column = 1;
+            int column = 0;
             for(PlayCode playCode:playCodeList1){
                 playCode.setPosition(new Long(row), new Long(column++));
             }
@@ -150,7 +150,7 @@ public class StrategyServiceBean {
             strategyMatrix.setStrategyMatrixCellListHeader(new ArrayList<>());
             strategyMatrix.setStrategyMatrixCellListValue(new ArrayList<>());
 
-            int column = 1;
+            int column = 0;
             strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(" "), null));
             for (int it = 0; it < strategy.getWidth(); it++) {
                 strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(column++), null));

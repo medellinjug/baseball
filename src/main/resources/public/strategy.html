@@ -6,14 +6,11 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
 
 
     <script src="StrategyController.js"></script>
@@ -85,12 +82,22 @@
 
 
 
+
+
     </style>
 
 </head>
 <body>
+
+<div class="container">
+
+    <div class="page-header">
+        <h2>Cloud Baseball App</h2>
+    </div>
+</div>
+<div class="row">
 <div ng-controller="Baseball" ng-init="goStrategy()">
-    <h1>Cloud Baseball App</h1>
+
 
     <!--FORM1-->
 
@@ -113,7 +120,8 @@
                     <div class="form-group" ng-class="{ 'has-error': form.height.$invalid && form.$submitted}">
                         <label class="control-label col-xs-3" for="height">Height:</label>
                         <div class="col-xs-5">
-                            <input type="text" id="height" name="height" ng-model="height" value="" class="form-control input-sm"
+                            <input type="text" id="height" name="height" ng-model="height" value=""
+                                   class="form-control input-sm"
                                    required>
                         </div>
                     </div>
@@ -123,7 +131,8 @@
                         <label class="control-label col-xs-3" for="type">Type:</label>
                         <div class="col-xs-5">
 
-                            <select id="type" name="type" value="type" ng-model="type" class="form-control input-sm" required>
+                            <select id="type" name="type" value="type" ng-model="type" class="form-control input-sm"
+                                    required>
                                 <option value="HIT">Hit</option>
                                 <option value="PITCH">Pitch</option>
 
@@ -136,7 +145,7 @@
 
 
                         <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
-                               ng-click="showDivs(true)">
+                               ng-click="goHome()">
                         <input type="submit" tabindex="-1" class="btn btn-success" value="Continue">
 
 
@@ -183,14 +192,12 @@
 
                     <br>
 
-                    <div style=" text-align: center;">
-
+                    <div style="text-align: center;">
 
 
                         <input type="submit" tabindex="-1" class="btn btn-success" value="Generate">
                         <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
                                ng-click="goStrategy()">
-
 
 
                     </div>
@@ -201,46 +208,44 @@
             </div>
 
 
-
-                <div class="panel panel-info" class="click-element animate-show">
-            <table class="table-bordered table table-hover">
-                <thead>
-                <tr class="info">
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>No. of codes</th>
-
-
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
-                    <td>
-                        <div>{{strategyPlay.play.code}}</div>
-
-                    </td>
-                    <td>
-                        <div>{{strategyPlay.play.name}}</div>
-
-                    </td>
-                    <td>
-                        <div ng-class="{ 'has-error': strategyPlay.quantity==null && form2.$submitted}">
-                        <div class="col-xs-3">
-
-                            <input type="text" name="quantity" ng-model="strategyPlay.quantity" class="form-control input-sm" required/>
-                        </div>
-                        </div>
-                    </td>
+            <div class="panel panel-info" class="click-element animate-show">
+                <table class="table-bordered table table-hover table-condensed">
+                    <thead>
+                    <tr class="info">
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>No. of codes</th>
 
 
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
+                        <td>
+                            <div>{{strategyPlay.play.code}}</div>
 
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                        <td>
+                            <div>{{strategyPlay.play.name}}</div>
+
+                        </td>
+                        <td >
+                            <div ng-class="{ 'has-error': strategyPlay.quantity==null && form2.$submitted}">
+                                <div class="col-xs-5">
+
+                                    <input type="number" name="quantity" ng-model="strategyPlay.quantity"
+                                           class="form-control input-sm" required/>
+                                </div>
+                            </div>
+                        </td>
 
 
+                    </tr>
+                    </tbody>
+                </table>
 
-                </div>
+
+            </div>
 
 
         </form>
@@ -248,7 +253,6 @@
 
 
     <!--MATRIX-->
-
 
 
     <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyResult">
@@ -292,7 +296,7 @@
 
                     <br>
 
-                    <div style=" text-align: center;">
+                    <div style="text-align: center;">
 
 
                         <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
@@ -308,52 +312,49 @@
         </div>
 
 
-            <table id="matrix" class="table-bordered table-striped table-condensed table-hover">
-                <caption>Matrix</caption>
-                <thead>
-                <tr>
-                    <th ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListHeader"
-                        clas="panel-heading">
-                        {{ strategyMatrixCell.value }}
-                    </th>
-                </tr>
-                </thead>
+        <table id="matrix" class="table-bordered table table-condensed">
+            <caption>Matrix</caption>
+            <thead>
+            <tr>
+                <th ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListHeader"
+                    clas="panel-heading">
+                    {{ strategyMatrixCell.value }}
+                </th>
+            </tr>
+            </thead>
 
-                <tbody>
-
-
-                <tr ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListValue">
-                    <td ng-repeat="(key,val) in strategyMatrixCell" style="background-color:{{val.color}};">
-                        {{val.value}}
-                    </td>
-                </tr>
+            <tbody>
 
 
-                </tbody>
-            </table>
+            <tr ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListValue">
+                <td ng-repeat="(key,val) in strategyMatrixCell" style="background-color:{{val.color}};">
+                    {{val.value}}
+                </td>
+            </tr>
 
 
+            </tbody>
+        </table>
 
 
-            <table id="list" class="table-bordered table-striped table table-hover"
-                   aria-orientation="vertical">
+        <table id="list" class="table-bordered table table-condensed"
+               aria-orientation="vertical">
 
-                <caption>List</caption>
-                <tbody>
-
-
-                <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
-                    <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.code}}</td>
-                    <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.name}}</td>
-                    <td ng-repeat="(key,val) in strategyPlay.playCodeList"
-                        style="background-color:{{strategyPlay.play.color}};">{{val.position}}
-                    </td>
-                </tr>
+            <caption>List</caption>
+            <tbody>
 
 
-                </tbody>
-            </table>
+            <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
+                <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.code}}</td>
+                <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.name}}</td>
+                <td ng-repeat="(key,val) in strategyPlay.playCodeList"
+                    style="background-color:{{strategyPlay.play.color}};">{{val.position}}
+                </td>
+            </tr>
 
+
+            </tbody>
+        </table>
 
 
     </div>
@@ -362,66 +363,16 @@
     <!--SET NUMBER OF CODE TO PLAY-->
 
 
-    <!-- Modal -->
+</div>
+</div>
+<div class="container">
+    <div class="footer">
 
 
-    <div id="strategyPlayModal" class="modal fade" role="dialog" data-toggle="modal">
-        <div class="modal-dialog">
+            <h5>Powered by <a href="http://www.medellinjug.org" target="_blank">MedellinJUG.org</a></h5>
+            <h6>2017</h6>
 
-            <!-- Modal content-->
-            <form class="form-horizontal" name="form_strategyplay" novalidate
-                  ng-submit="form_strategyplay.$valid && submitStrategyPlay()">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Update number of code</h4>
-                    </div>
-                    <div class="modal-body">
-
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3" for="height">Name:</label>
-                            <div class="col-xs-5">
-                                {{strategyPlay.play.code}} {{strategyPlay.play.name}}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-xs-3" for="type">Type:</label>
-                            <div class="col-xs-5">
-                                {{strategyPlay.play.type}}
-
-
-                            </div>
-                        </div>
-
-
-                        <div class="form-group"
-                             ng-class="{ 'has-error': form_strategyplay.quantity.$invalid && form_strategyplay.$submitted}">
-                            <label class="control-label col-xs-3" for="quantity">Number of codes:</label>
-                            <div class="col-xs-5">
-                                <input type="text" id="quantity" name="quantity" ng-model="quantity" value=""
-                                       class="form-control" required>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="submit" tabindex="-1" class="btn btn-success" value="Save">
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
-
-
-
-
-
 </div>
 
 

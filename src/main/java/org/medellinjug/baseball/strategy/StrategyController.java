@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Hilmer on 24/06/17.
  */
+@Deprecated
 public class StrategyController {
 
 

@@ -1,9 +1,18 @@
 var app = angular.module('demo', [])
 
 .controller('Baseball', function($scope, $http) {
-	$scope.urlServicePlay = "http://127.0.0.1:8080/baseball/play";
 
-	$scope.urlServiceStrategy = "http://127.0.0.1:8080/baseball/strategy";
+$scope.goHome = function(){
+    window.location="index.html";
+}
+
+    /*
+	$scope.urlServicePlay = "http://127.0.0.1:8080/baseball/play";
+    $scope.urlServiceStrategy = "http://127.0.0.1:8080/baseball/strategy";*/
+
+	$scope.urlServicePlay = "baseball/play";
+    $scope.urlServiceStrategy = "baseball/strategy";
+
     $scope.showNewStrategy = true;
 	$scope.showStrategyPlayList = false;
 	$scope.showStrategyResult = false;
@@ -336,6 +345,8 @@ var app = angular.module('demo', [])
             date:$scope.strategy.date,
             width:$scope.strategy.width,
             height:$scope.strategy.height,
+            type:$scope.strategy.type,
+            id:$scope.strategy.id,
             strategyPlayList:$scope.strategy.strategyPlayList
          };
 
@@ -345,17 +356,10 @@ var app = angular.module('demo', [])
                         headers: { 'Content-Type': 'application/json'}
                         });
 
-
-
-
- //$scope.getStrategyById($scope.id);
          res.success(function(data, status, headers, config) {
             $scope.message = data;
             $scope.showStrategyPlay = false;
             $scope.getStrategyById($scope.id);
-
-
-           // $("#strategyPlayModal").modal('hide');
         });
 
 
