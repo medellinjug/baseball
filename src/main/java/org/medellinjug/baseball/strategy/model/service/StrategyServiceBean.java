@@ -1,9 +1,6 @@
 package org.medellinjug.baseball.strategy.model.service;
 
-import org.medellinjug.baseball.strategy.model.entity.Play;
-import org.medellinjug.baseball.strategy.model.entity.PlayCode;
-import org.medellinjug.baseball.strategy.model.entity.Strategy;
-import org.medellinjug.baseball.strategy.model.entity.StrategyPlay;
+import org.medellinjug.baseball.strategy.model.entity.*;
 import org.medellinjug.baseball.strategy.model.utils.StrategyMatrix;
 import org.medellinjug.baseball.strategy.model.utils.StrategyMatrixCell;
 
@@ -11,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +25,9 @@ public class StrategyServiceBean {
 
         strategy = new Strategy(next, new Date(), 0L, strategy.getHeight(), strategy.getType());
 
+        Play.Type type = strategy.getType();
+        strategy.setPlayerList(this.ePlayerList.stream().filter(p->p.getType().equals(type)).collect(Collectors.toList()));
+
         this.generateStrategyPlayss(strategy);
 
         eList.add(strategy);
@@ -36,15 +37,15 @@ public class StrategyServiceBean {
 
 
     private static void generateStrategyPlayss(Strategy strategy){
-
+/*
         PlayServiceBean playServiceBean = new PlayServiceBean();
         List<Play> playList = playServiceBean.getPlayssByType(strategy.getType(), null);
+       */
+        List<Play> playList = strategy.getPlayerList().stream().map(p->p.getPlayList()).flatMap(q->q.stream()).distinct().collect(Collectors.toList());
 
-            for (Play play : playList) {
-                 strategy.getStrategyPlayList()
-                        .add(new StrategyPlay(strategy, play, 5L));
-
-            }
+        for (Play play : playList) {
+            strategy.getStrategyPlayList().add(new StrategyPlay(strategy, play, 3L));
+        }
 
 
     }
@@ -96,10 +97,7 @@ public class StrategyServiceBean {
 
     public Strategy processStrategy(Long id, Strategy strategy){
 
-
-
        // strategy = this.getStrategy(id);
-
 
 
         strategy.calculateSize();
@@ -132,55 +130,28 @@ public class StrategyServiceBean {
 
         for(List<PlayCode> playCodeList1:playCodeMatrix){
 
-            int column = 0;
+            int column = 11;
             for(PlayCode playCode:playCodeList1){
                 playCode.setPosition(new Long(row), new Long(column++));
+                if(column%10==0){
+                    column ++;
+                }
             }
             row++;
         }
 
+        List<Player> playerList = this.ePlayerList.stream().filter(p->p.getType().equals(strategy.getType())).collect(Collectors.toList());
+        if(!playerList.isEmpty()) {
+            strategy.setStrategyMatrixList(new ArrayList<>());
 
+            for (Player player : playerList) {
+                StrategyMatrix strategyMatrix = this.generateStrategyMatrix(playCodeMatrix, player, strategy.getWidth());
 
-
-        if(true) {
-
-            String defaultColor = "#FFFFFF";
-
-            StrategyMatrix strategyMatrix = new StrategyMatrix();
-            strategyMatrix.setStrategyMatrixCellListHeader(new ArrayList<>());
-            strategyMatrix.setStrategyMatrixCellListValue(new ArrayList<>());
-
-            int column = 0;
-            strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(" "), null));
-            for (int it = 0; it < strategy.getWidth(); it++) {
-                strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(column++), null));
-            }
-
-
-            row = 1;
-            for (List<PlayCode> playCodeList1 : playCodeMatrix) {
-
-                List<StrategyMatrixCell> strategyMatrixCellListValue = new ArrayList<>();
-                strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(row++), defaultColor));
-
-                for (PlayCode playCode1 : playCodeList1) {
-                    strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(playCode1.getStrategyPlay().getPlay().getCode()), playCode1.getStrategyPlay().getPlay().getColor()));
-
+                if (strategyMatrix != null) {
+                    strategy.getStrategyMatrixList().add(strategyMatrix);
                 }
-                if(playCodeList1.size()<strategy.getWidth()){
-
-                    for (int it = playCodeList1.size(); it < strategy.getWidth(); it++) {
-                        strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(" "), defaultColor));
-                    }
-
-                }
-                strategyMatrix.getStrategyMatrixCellListValue().add(strategyMatrixCellListValue);
-
             }
-
-            strategy.setStrategyMatrix(strategyMatrix);
         }
-
 
 
         int matchIndex = -1;
@@ -198,10 +169,61 @@ public class StrategyServiceBean {
 
 
 
-
-
         return strategy;
     }
 
+
+    private StrategyMatrix generateStrategyMatrix(List<List<PlayCode>> playCodeMatrix, Player player, Long cols ){
+
+        String defaultColor = "#FFFFFF";
+
+        StrategyMatrix strategyMatrix = new StrategyMatrix();
+        strategyMatrix.setPlayer(player);
+        strategyMatrix.setStrategyMatrixCellListHeader(new ArrayList<>());
+        strategyMatrix.setStrategyMatrixCellListValue(new ArrayList<>());
+
+        int column = 11;
+        strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(" "), null));
+
+        for (int it = 0; it < cols; it++) {
+            strategyMatrix.getStrategyMatrixCellListHeader().add(new StrategyMatrixCell(String.valueOf(column++), null));
+
+            if(column%10==0){
+                column ++;
+            }
+        }
+
+        int row = 1;
+
+        for (List<PlayCode> playCodeList : playCodeMatrix) {
+
+            List<StrategyMatrixCell> strategyMatrixCellListValue = new ArrayList<>();
+            strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(row++), defaultColor));
+
+            for (PlayCode playCode : playCodeList) {
+                if(player.getPlayList().stream().anyMatch(p->p.getId().equals(playCode.getStrategyPlay().getPlay().getId()))) {
+                    strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(playCode.getStrategyPlay().getPlay().getCode()), playCode.getStrategyPlay().getPlay().getColor()));
+                }else{
+                    strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(" "), defaultColor));
+                }
+            }
+            if(playCodeList.size()< cols){
+
+                for (int it = playCodeList.size(); it < cols; it++) {
+                    strategyMatrixCellListValue.add(new StrategyMatrixCell(String.valueOf(" "), defaultColor));
+                }
+
+            }
+            strategyMatrix.getStrategyMatrixCellListValue().add(strategyMatrixCellListValue);
+
+        }
+
+        return strategyMatrix;
+
+    }
+
+
+
+    private final CopyOnWriteArrayList<Player> ePlayerList = PlaysReader.getInstancePlayer();
 
 }

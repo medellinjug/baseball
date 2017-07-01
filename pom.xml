@@ -55,6 +55,34 @@
             </plugins>
         </build>
 
+    <!--
+        <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>appengine-maven-plugin</artifactId><version>1.2.1</version>
+        </plugin>
+
+
+        <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>appengine-maven-plugin</artifactId>
+            <version>1.2.1</version>
+        </plugin>
+
+        <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>appengine-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+                <deployables>
+                    <!- - by default, ${project.build.directory}/appengine-staging is the output directory - ->
+                    <!- - app.yaml in root of staging (default configuration) - ->
+                    <param>${project.build.directory}/appengine-staging/app.yaml</param>
+                    <!- - queue.yaml is in the generated dir of staging - ->
+                    <param>${project.build.directory}/appengine-staging/WEB-INF/appengine-generated/queue.yaml</param>
+                </deployables>
+            </configuration>
+        </plugin>
+    -->
 
     <!--
         <build>

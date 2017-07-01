@@ -269,7 +269,7 @@
 
             <div class="panel-body">
 
-                <form class="form-horizontal" name="form3" novalidate ng-submit="form3.$valid && submitStrategy()">
+                <form class="form-horizontal" name="form3" novalidate >
                     <div class="form-group">
                         <label class="control-label col-xs-3" for="height">Height:</label>
                         <div class="col-xs-5">
@@ -311,12 +311,12 @@
 
         </div>
 
-
-        <table id="matrix" class="table-bordered table table-condensed">
-            <caption>Matrix</caption>
+        <div  ng-repeat="strategyMatrix in strategy.strategyMatrixList">
+            <table id="matrix" class="table-bordered table table-condensed">
+            <caption>Matrix for:  {{ strategyMatrix.player.fullName }} </caption>
             <thead>
             <tr>
-                <th ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListHeader"
+                <th ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListHeader"
                     clas="panel-heading">
                     {{ strategyMatrixCell.value }}
                 </th>
@@ -326,7 +326,7 @@
             <tbody>
 
 
-            <tr ng-repeat="strategyMatrixCell in strategy.strategyMatrix.strategyMatrixCellListValue">
+            <tr ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListValue">
                 <td ng-repeat="(key,val) in strategyMatrixCell" style="background-color:{{val.color}};">
                     {{val.value}}
                 </td>
@@ -335,7 +335,7 @@
 
             </tbody>
         </table>
-
+        </div>
 
         <table id="list" class="table-bordered table table-condensed"
                aria-orientation="vertical">

@@ -6,12 +6,12 @@ $scope.goHome = function(){
     window.location="index.html";
 }
 
-    /*
-	$scope.urlServicePlay = "http://127.0.0.1:8080/baseball/play";
-    $scope.urlServiceStrategy = "http://127.0.0.1:8080/baseball/strategy";*/
 
+	$scope.urlServicePlay = "http://127.0.0.1:8080/baseball/play";
+    $scope.urlServiceStrategy = "http://127.0.0.1:8080/baseball/strategy";
+/*
 	$scope.urlServicePlay = "baseball/play";
-    $scope.urlServiceStrategy = "baseball/strategy";
+    $scope.urlServiceStrategy = "baseball/strategy";*/
 
     $scope.showNewStrategy = true;
 	$scope.showStrategyPlayList = false;

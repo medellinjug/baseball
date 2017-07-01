@@ -1,5 +1,6 @@
 package org.medellinjug.baseball.strategy.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.medellinjug.baseball.strategy.model.utils.StrategyMatrix;
 
 import java.io.Serializable;
@@ -19,7 +20,11 @@ public class Strategy{
     private Long height;
     private Play.Type type;
     private List<StrategyPlay> strategyPlayList;
+    private List<Player> playerList;
     private StrategyMatrix strategyMatrix;
+
+
+    private List<StrategyMatrix> strategyMatrixList;
 
     public Strategy() {
         super();
@@ -44,6 +49,7 @@ public class Strategy{
     public void setStrategyPlayList(List<StrategyPlay> strategyPlayList) {
         this.strategyPlayList = strategyPlayList;
     }
+
 
     public List<StrategyPlay> getStrategyPlayList() {
         return strategyPlayList;
@@ -97,6 +103,22 @@ public class Strategy{
 
     public void setStrategyMatrix(StrategyMatrix strategyMatrix) {
         this.strategyMatrix = strategyMatrix;
+    }
+
+    public List<StrategyMatrix> getStrategyMatrixList() {
+        return strategyMatrixList;
+    }
+
+    public void setStrategyMatrixList(List<StrategyMatrix> strategyMatrixList) {
+        this.strategyMatrixList = strategyMatrixList;
+    }
+
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(List<Player> playerList) {
+        this.playerList = playerList;
     }
 
     @Override

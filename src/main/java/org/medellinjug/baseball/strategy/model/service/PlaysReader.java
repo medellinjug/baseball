@@ -4,11 +4,12 @@ package org.medellinjug.baseball.strategy.model.service;
 import org.medellinjug.baseball.strategy.model.entity.Play;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.medellinjug.baseball.strategy.model.entity.Player;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Created by Hilmer on 25/06/17.
@@ -16,8 +17,11 @@ import java.util.stream.Collectors;
  */
 public class PlaysReader {
     private static final CopyOnWriteArrayList<Play> eList = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<Player> ePlayerList = new CopyOnWriteArrayList<>();
 
     static {
+
+        try {
        String jsonString = "["
                 + " {\"id\":1,\"code\":\"T-SA\",\"name\":\"TOQUE SACRIFICIO\",\"type\":\"HIT\",\"color\":\"#ffffcc\"}"
                 +", {\"id\":2,\"code\":\"T-SO\",\"name\":\"TOQUE SORPRESA\",\"type\":\"HIT\",\"color\":\"#ccffcc\"}"
@@ -61,7 +65,7 @@ public class PlaysReader {
                +", {\"id\":106,\"code\":\"SL\",\"name\":\"SLIDER\",\"type\":\"PITCH\",\"color\":\"#ff6666\"}"
                +", {\"id\":107,\"code\":\"CV-I\",\"name\":\"CURVE IN\",\"type\":\"PITCH\",\"color\":\"#ffccee\"}"
                +", {\"id\":108,\"code\":\"CV-O\",\"name\":\"CURVE OUT\",\"type\":\"PITCH\",\"color\":\"#f2e6d9\"}"
-               +", {\"id\":109,\"code\":\"CV-F\",\"name\":\"CURVE FRONTAL\",\"type\":\"PITCH\",\"color\":\"#e0e0eb\"}"
+               +", {\"id\":109,\"code\":\"CV-F\",\"name\":\"CURVE FLOOR\",\"type\":\"PITCH\",\"color\":\"#e0e0eb\"}"
                +", {\"id\":110,\"code\":\"CH-OK\",\"name\":\"CHANGE OK\",\"type\":\"PITCH\",\"color\":\"#33adff\"}"
                +", {\"id\":111,\"code\":\"PM\",\"name\":\"PALMBALL\",\"type\":\"PITCH\",\"color\":\"#00ffbf\"}"
                +", {\"id\":112,\"code\":\"SW\",\"name\":\"SCREW BALL\",\"type\":\"PITCH\",\"color\":\"#ff9900\"}"
@@ -73,7 +77,7 @@ public class PlaysReader {
 
                 +"]";
 
-        try {
+
 
             ObjectMapper mapper = new ObjectMapper();
 
@@ -82,8 +86,55 @@ public class PlaysReader {
             eList.addAll(Arrays.asList(myPlayss));
             //eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
 
+
         } catch (IOException exception) {
             System.out.println("Error: " + exception.getMessage());
+        }
+
+
+        try {
+        String jsonString = "["
+                + " {\"id\":1,\"fullName\":\"Hilmer\",\"type\":\"PITCH\"}"
+                +", {\"id\":2,\"fullName\":\"Alirio\",\"type\":\"PITCH\"}"
+
+                +"]";
+
+
+            ObjectMapper mapper = new ObjectMapper();
+            Player[] myPlayerss = mapper.readValue(jsonString, Player[].class);
+            ePlayerList.addAll(Arrays.asList(myPlayerss));
+            //eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
+
+            Player player1 = ePlayerList.get(0);
+            player1.setPlayList(new ArrayList<>());
+            player1.getPlayList().add(getPlay(player1.getType(), 101L));
+            player1.getPlayList().add(getPlay(player1.getType(), 102L));
+            /*player1.getPlayList().add(getPlay(player1.getType(), 103L));
+            player1.getPlayList().add(getPlay(player1.getType(), 104L));
+            player1.getPlayList().add(getPlay(player1.getType(), 105L));
+            player1.getPlayList().add(getPlay(player1.getType(), 110L));
+            player1.getPlayList().add(getPlay(player1.getType(), 111L));
+            player1.getPlayList().add(getPlay(player1.getType(), 112L));*/
+            player1.getPlayList().add(getPlay(player1.getType(), 113L));
+            player1.getPlayList().add(getPlay(player1.getType(), 114L));
+
+
+            Player player2 = ePlayerList.get(1);
+            player2.setPlayList(new ArrayList<>());
+            player2.getPlayList().add(getPlay(player2.getType(), 101L));
+            player2.getPlayList().add(getPlay(player2.getType(), 102L));
+            player2.getPlayList().add(getPlay(player2.getType(), 103L));
+            player2.getPlayList().add(getPlay(player2.getType(), 104L));/*
+            player2.getPlayList().add(getPlay(player2.getType(), 106L));
+            player2.getPlayList().add(getPlay(player2.getType(), 107L));
+            player2.getPlayList().add(getPlay(player2.getType(), 108L));
+            player2.getPlayList().add(getPlay(player2.getType(), 109L));*/
+
+
+
+        } catch (IOException exception) {
+            System.out.println("Error: " + exception.getMessage());
+            exception.printStackTrace();
         }
 
     }
@@ -93,4 +144,20 @@ public class PlaysReader {
     public static CopyOnWriteArrayList<Play> getInstance(){
         return eList;
     }
+
+
+
+
+
+    private static Play getPlay(Play.Type type, Long id){
+        return eList.stream()
+                .filter(p->p.getType().equals(type) && p.getId().equals(id)).findFirst().get();
+
+    }
+
+
+    public static CopyOnWriteArrayList<Player> getInstancePlayer(){
+        return ePlayerList;
+    }
+
 }
