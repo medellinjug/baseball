@@ -13,6 +13,13 @@ public class Player {
     private Play.Type type;
     private List<Play> playList;
 
+    public Player( Long id, String fullName, Play.Type type) {
+
+        this.id=id;
+        this.fullName=fullName;
+        this.type=type;
+    }
+
     public Long getId() {
         return id;
     }

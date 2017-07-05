@@ -434,6 +434,35 @@ $scope.goHome = function(){
 
     };
 
+//add player
+    $scope.submitPlayer = function(){
+        var addPlayer ={
+            code:$scope.id,
+            name:$scope.fullName,
+            type:$scope.type
+        };
+
+        var res;
+        if ($scope.id == null){
+            res = $http.post($scope.urlServicePlay, JSON.stringify(addPlayer), {
+                headers: { 'Content-Type': 'application/json'}
+            });
+        }else{
+            res = $http.put($scope.urlServicePlay+"/"+$scope.id, JSON.stringify(addPlay), {
+                headers: { 'Content-Type': 'application/json'}});
+        }
+        res.success(function(data, status, headers, config) {
+            $scope.message = data;
+            $scope.getPlays();
+            $scope.showDivs(true);
+
+        });
+        res.error(function(data, status, headers, config) {
+            alert( "failure message: " + JSON.stringify({data: data}));
+        });
+
+    }
+
 });
 
 
