@@ -106,7 +106,7 @@
                     </button>
                 </div>
                 <div class="col-xs-4">
-                    <button class="btn btn-danger" id="homeButton" type="button" ng-click="getPlays()">
+                    <button class="btn btn-danger" id="homeButton" type="button" ng-click="getPlayers()">
                         <span class="glyphicon glyphicon-home"></span>
                     </button>
                 </div>
@@ -116,14 +116,14 @@
 
         </div>
         </br></br>
-        <div id="people" class="container" class="click-element animate-show" ng-show="showPlayList">
+        <div id="people" class="container" class="click-element animate-show" ng-show="showPlayerList">
             <div class="row">
-                <div class="peopleItem col-sm-3" ng-repeat="play in playList" ng-click="getPlayById(play.id)"
+                <div class="peopleItem col-sm-3" ng-repeat="play in playList" ng-click="getPlayerById(player.id)"
                      style="cursor: pointer">
 
                     <div class="peopleContent">
-                        <h4>{{play.code}} {{play.name}}</h4>
-                        {{play.type}}<br>
+                        <h4>{{play.code}} {{player.fullName}}</h4>
+                        {{player.type}}<br>
 
                     </div>
                 </div>
