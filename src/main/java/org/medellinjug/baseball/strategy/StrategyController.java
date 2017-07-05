@@ -29,11 +29,11 @@ public class StrategyController {
           //  System.exit(1);
         }
 
-        String height = c==null?"3" :c.readLine("Enter the height: ");
+        String rows = c==null?"3" :c.readLine("Enter the height: ");
         //char [] oldPassword = c.readPassword("Enter your old password: ");
 
 
-        Strategy strategy = new Strategy(0L, new Date(), 0L, new Long(height), Play.Type.HIT);
+        Strategy strategy = new Strategy(0L, new Date(), 0L, new Long(rows), Play.Type.HIT);
         if(true){
             inputData(strategy);
         }else {

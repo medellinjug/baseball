@@ -145,7 +145,7 @@ $scope.goHome = function(){
         $scope.showStrategyPlayList = false;
         $scope.showStrategyResult = false;
 
-        $scope.height = "";
+        $scope.rows = "";
         $scope.type = null;
 
         $scope.id = null;
@@ -159,7 +159,7 @@ $scope.goHome = function(){
 
 
         var addStrategy ={
-                height:$scope.height,
+                rows:$scope.rows,
                 type:$scope.type
         };
         var res;
@@ -199,13 +199,14 @@ $scope.goHome = function(){
                 $scope.showStrategyResult = false;
 
 
-            }else{
+            } else{
 
                 $scope.formTitle = "Results of strategy"
                 $scope.showStrategyResult = true;
                 $scope.showStrategyPlayList = false;
                 $scope.getStrategyById($scope.id );
             }
+
         });
 
         res.error(function(data, status, headers, config) {
@@ -344,7 +345,7 @@ $scope.goHome = function(){
             strategy:$scope.strategy,
             date:$scope.strategy.date,
             width:$scope.strategy.width,
-            height:$scope.strategy.height,
+            rows:$scope.strategy.rows,
             type:$scope.strategy.type,
             id:$scope.strategy.id,
             strategyPlayList:$scope.strategy.strategyPlayList

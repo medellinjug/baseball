@@ -23,7 +23,7 @@ public class StrategyServiceBean {
 
         Long next = (this.eList.stream().mapToLong(p->p.getId()).max().orElse(0L))+1;
 
-        strategy = new Strategy(next, new Date(), 0L, strategy.getHeight(), strategy.getType());
+        strategy = new Strategy(next, new Date(), 0L, strategy.getRows(), strategy.getType());
 
         Play.Type type = strategy.getType();
         strategy.setPlayerList(this.ePlayerList.stream().filter(p->p.getType().equals(type)).collect(Collectors.toList()));

@@ -17,7 +17,7 @@ public class Strategy{
     private Long id;
     private Date date;
     private Long width;
-    private Long height;
+    private Long rows;
     private Play.Type type;
     private List<StrategyPlay> strategyPlayList;
     private List<Player> playerList;
@@ -31,16 +31,16 @@ public class Strategy{
         /*this.id = 0L;
         this.date = null;
         this.width = null;
-        this.height = height;
+        this.rows = rows;
         this.type = type;
         this.strategyPlayList = new ArrayList<>();*/
     }
 
-    public Strategy(Long id, Date date, Long width, Long height, Play.Type type) {
+    public Strategy(Long id, Date date, Long width, Long rows, Play.Type type) {
         this.id = id;
         this.date = date;
         this.width = width;
-        this.height = height;
+        this.rows = rows;
         this.type = type;
         this.strategyPlayList = new ArrayList<>();
     }
@@ -73,12 +73,12 @@ public class Strategy{
         this.width = width;
     }
 
-    public Long getHeight() {
-        return height;
+    public Long getRows() {
+        return rows;
     }
 
-    public void setHeight(Long height) {
-        this.height = height;
+    public void setRows(Long rows) {
+        this.rows = rows;
     }
 
     public Play.Type getType() {
@@ -126,7 +126,7 @@ public class Strategy{
         return "Strategy{" +
                 "date=" + date +
                 ", width=" + width +
-                ", height=" + height +
+                ", rows=" + rows +
                 ", strategyPlayList=" + strategyPlayList +
                 '}';
     }
@@ -137,8 +137,8 @@ public class Strategy{
     }
 
     public void calculateSize(){
-        //this.height = 5L;
-        this.width = this.getNumberOfCodes()/this.height;
+        //this.rows = 5L;
+        this.width = this.getNumberOfCodes()/this.rows;
     }
 
 
