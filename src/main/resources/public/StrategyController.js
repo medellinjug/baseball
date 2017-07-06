@@ -9,6 +9,7 @@ $scope.goHome = function(){
 
 	$scope.urlServicePlay = "http://127.0.0.1:8080/baseball/play";
     $scope.urlServiceStrategy = "http://127.0.0.1:8080/baseball/strategy";
+    $scope.urlServicePlayer = "http://127.0.0.1:8080/baseball/player";
 /*
 	$scope.urlServicePlay = "baseball/play";
     $scope.urlServiceStrategy = "baseball/strategy";*/
@@ -21,6 +22,9 @@ $scope.goHome = function(){
 	$scope.showPlayList = true;
 	$scope.showPhoto = false;
 	$scope.photo = false;
+
+    $scope.showPlayerList = true;
+
 	$scope.showDivs = function(playList){
 		if (playList){
 			$scope.showNewForm = false;
@@ -174,7 +178,7 @@ $scope.goHome = function(){
         }else{
             id=$scope.id;
             newStrategy = false;
-            res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(addStrategy), {
+            res = $http.addStrategy($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(addStrategy), {
                 headers: { 'Content-Type': 'application/json'}});
         }
 
@@ -434,6 +438,79 @@ $scope.goHome = function(){
 
 
     };
+
+
+
+
+    $scope.showDivPlayer = function(playerList){
+        if (playerList){
+            $scope.showNewForm = false;
+            $scope.showPlayerList = true;
+        }else{
+            $scope.formTitle = "Add New Player"
+
+            $scope.id = "";
+            $scope.fullName = "";
+            $scope.type = null;
+
+
+            $scope.showNewForm = true;
+            $scope.showPlayerList = false;
+        }
+    }
+
+
+
+//add player
+    $scope.submitPlayer = function(){
+        var addPlayer ={
+            code:$scope.id,
+            name:$scope.fullName,
+            type:$scope.type
+        };
+
+        var res;
+        if ($scope.id == null){
+            res = $http.post($scope.urlServicePlayer, JSON.stringify(addPlayer), {
+                headers: { 'Content-Type': 'application/json'}
+            });
+        }else{
+            res = $http.put($scope.urlServicePlayer+"/"+$scope.id, JSON.stringify(addPlayer), {
+                headers: { 'Content-Type': 'application/json'}});
+        }
+        res.success(function(data, status, headers, config) {
+            $scope.message = data;
+            $scope.getPlayers();
+            $scope.showDivPlayer(true);
+
+        });
+        res.error(function(data, status, headers, config) {
+            alert( "failure message: " + + JSON.stringify({data: data}));
+        });
+
+    }
+
+    $scope.deletePlayer = function() {
+        res = $http.delete($scope.urlServicePlayer+"/"+$scope.id);
+        res.success(function(data, status, headers, config) {
+            $scope.getPlayers();
+            $scope.showDivPlayer(true);
+
+        });
+        res.error(function(data, status, headers, config) {
+            alert( "failure message: " + JSON.stringify({data: data}));
+        });
+    }
+
+
+    $scope.getPlayers = function(){
+
+        $http.get($scope.urlServicePlayer).
+        then(function(response) {
+            $scope.playerList = response.data;
+        });
+        $scope.searchText = "";
+    }
 
 });
 
