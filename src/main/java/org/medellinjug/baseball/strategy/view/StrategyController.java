@@ -6,16 +6,13 @@ import java.util.List;
 import org.medellinjug.baseball.strategy.model.entity.Play;
 import org.medellinjug.baseball.strategy.model.entity.Strategy;
 import org.medellinjug.baseball.strategy.model.entity.StrategyPlay;
+import org.medellinjug.baseball.strategy.model.exception.PlayerNoFoundException;
 import org.medellinjug.baseball.strategy.model.service.PlayServiceBean;
 import org.medellinjug.baseball.strategy.model.service.StrategyServiceBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 /**
  * Created by Hilmer on 25/06/17.
  * MedellinJUG.org
@@ -97,8 +94,13 @@ public class StrategyController {
 
     // Get a new strategy
     @RequestMapping(method = RequestMethod.POST, value = "/strategy")
+    @ExceptionHandler(PlayerNoFoundException.class)
     public ResponseEntity addStrategy(@RequestBody Strategy strategy){
 
+/*
+        if(true){
+            throw new PlayerNoFoundException("No playes for " + strategy.getType());
+        }*/
          strategy = strategyServiceBean.createStrategy(strategy);
 
 

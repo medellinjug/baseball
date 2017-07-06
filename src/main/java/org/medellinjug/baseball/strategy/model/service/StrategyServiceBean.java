@@ -1,6 +1,7 @@
 package org.medellinjug.baseball.strategy.model.service;
 
 import org.medellinjug.baseball.strategy.model.entity.*;
+import org.medellinjug.baseball.strategy.model.exception.PlayerNoFoundException;
 import org.medellinjug.baseball.strategy.model.utils.StrategyMatrix;
 import org.medellinjug.baseball.strategy.model.utils.StrategyMatrixCell;
 
@@ -19,14 +20,22 @@ public class StrategyServiceBean {
 
     private final List<Strategy> eList = new ArrayList<>();
 
-    public Strategy createStrategy(Strategy strategy){
+    public Strategy createStrategy(Strategy strategy) throws PlayerNoFoundException {
+
+        Play.Type type = strategy.getType();
+
+        List<Player> playerList = this.ePlayerList.stream().filter(p->p.getType().equals(type)).collect(Collectors.toList());
+
+        if(playerList.isEmpty()){
+            throw new PlayerNoFoundException("No playes for " + type);
+        }
 
         Long next = (this.eList.stream().mapToLong(p->p.getId()).max().orElse(0L))+1;
 
         strategy = new Strategy(next, new Date(), 0L, strategy.getRows(), strategy.getType());
 
-        Play.Type type = strategy.getType();
-        strategy.setPlayerList(this.ePlayerList.stream().filter(p->p.getType().equals(type)).collect(Collectors.toList()));
+
+        strategy.setPlayerList(playerList);
 
         this.generateStrategyPlayss(strategy);
 

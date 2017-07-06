@@ -211,6 +211,7 @@ $scope.goHome = function(){
 
         res.error(function(data, status, headers, config) {
             alert( "failure message: " + JSON.stringify({data: data}));
+            alert( "failure message: " + data.message);
             }
         );
     }
