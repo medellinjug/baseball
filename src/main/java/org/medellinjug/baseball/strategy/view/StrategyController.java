@@ -4,10 +4,12 @@ package org.medellinjug.baseball.strategy.view;
 import java.util.List;
 
 import org.medellinjug.baseball.strategy.model.entity.Play;
+import org.medellinjug.baseball.strategy.model.entity.Player;
 import org.medellinjug.baseball.strategy.model.entity.Strategy;
 import org.medellinjug.baseball.strategy.model.entity.StrategyPlay;
 import org.medellinjug.baseball.strategy.model.exception.PlayerNoFoundException;
 import org.medellinjug.baseball.strategy.model.service.PlayServiceBean;
+import org.medellinjug.baseball.strategy.model.service.PlayerServiceBean;
 import org.medellinjug.baseball.strategy.model.service.StrategyServiceBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class StrategyController {
 
     PlayServiceBean playServiceBean = new PlayServiceBean();
     StrategyServiceBean strategyServiceBean = new StrategyServiceBean();
+    PlayerServiceBean playerServiceBean= new PlayerServiceBean();
+
 
     // Get all plays
     @RequestMapping(method = RequestMethod.GET, value = "/play")
@@ -171,6 +175,14 @@ public class StrategyController {
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    // Get all players
+    @RequestMapping(method = RequestMethod.GET, value = "/player")
+    public Player[] getAllPlayerss() {
+
+        return playerServiceBean.getAllPlayerss().toArray(new Player[0]);
     }
 
 

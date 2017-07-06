@@ -13,7 +13,11 @@ public class Player {
     private Play.Type type;
     private List<Play> playList;
 
-    public Player( Long id, String fullName, Play.Type type) {
+    public Player() {
+        super();
+    }
+
+    public Player(Long id, String fullName, Play.Type type) {
 
         this.id=id;
         this.fullName=fullName;

@@ -8,7 +8,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Created by ANALIS-SUI-02 on 7/5/17.
+ * Created by Patricia on 7/5/17.
+ * MedellinJUG.org
  */
 public class PlayerServiceBean {
 
