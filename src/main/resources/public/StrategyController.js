@@ -461,7 +461,7 @@ $scope.goHome = function(){
 
 
 
-//add player
+//add/update player
     $scope.submitPlayer = function(){
         var addPlayer ={
             code:$scope.id,
@@ -510,6 +510,34 @@ $scope.goHome = function(){
             $scope.playerList = response.data;
         });
         $scope.searchText = "";
+    }
+
+    $scope.getPlayerById = function(id){
+        $http.get($scope.urlServicePlayer+"/"+id).
+        then(function(response) {
+            $scope.player = response.data;
+            $scope.showDetailPlayer();
+        });
+        $scope.searchText = "";
+    }
+
+    $scope.showDetailPlayer = function(){
+        $scope.showDivPlayer(false);
+        $scope.formTitle = "Update Player"
+        $scope.id = $scope.player.id;
+        $scope.fullName = $scope.player.fullName;
+        $scope.type = $scope.player.type;
+
+    }
+
+    //Search Players
+    $scope.searchPlayers = function (){
+        $scope.playerList = null;
+        $http.get($scope.urlServicePlayer+"/players/"+$scope.searchType+"&"+$scope.searchText).
+        then(function(response) {
+            $scope.playerList = response.data;
+
+        });
     }
 
 });

@@ -79,7 +79,7 @@
 <div class="row">
     <div ng-controller="Baseball" ng-init="getPlayers()">
 
-        <div class="click-element animate-show" >
+        <div class="click-element animate-show" ng-show="showPlayerList">
             <h2>Player</h2>
             <form>
 
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="!playerList.length" class="alert alert-info col-sm-7">No plays found matching your search
+            <div ng-show="!playerList.length" class="alert alert-info col-sm-7">No players found matching your search
                 criteria
             </div>
         </div>
@@ -124,7 +124,7 @@
             <div class="panel panel-info " class="click-element animate-show" ng-show="showNewForm">
                 <div class="panel-heading">
                     <h3 class="panel-title"><div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
-                        <button class="btn btn-primary" id="delete"  type="button" ng-click="deletePlayer()" ng-show="showPhoto" style="float: right; position: relative; bottom: 9px;">
+                        <button class="btn btn-primary" id="delete"  type="button" ng-click="deletePlayer()"  style="float: right; position: relative; bottom: 9px;">
                             <span class="glyphicon glyphicon-trash"></span> Delete
                         </button>
                     </div> </h3>

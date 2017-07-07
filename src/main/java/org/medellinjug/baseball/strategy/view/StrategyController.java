@@ -178,6 +178,8 @@ public class StrategyController {
     }
 
 
+
+
     // Get all players
     @RequestMapping(method = RequestMethod.GET, value = "/player")
     public Player[] getAllPlayerss() {
@@ -185,6 +187,63 @@ public class StrategyController {
         return playerServiceBean.getAllPlayerss().toArray(new Player[0]);
     }
 
+    // Add a player
+    @RequestMapping(method = RequestMethod.POST, value="/player")
+    public ResponseEntity addPlayer(@RequestBody Player player) {
+        if (playerServiceBean.add(player)) {
+            return new ResponseEntity<>(null, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    // Update a player
+    @RequestMapping(method = RequestMethod.PUT, value = "/player/{id}")
+    public ResponseEntity updatePlayer(@PathVariable Long id, @RequestBody Player player) {
+
+        if (playerServiceBean.update(id, player)) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+    // Delete a player
+    @RequestMapping(method = RequestMethod.DELETE, value = "/player/{id}")
+    public ResponseEntity deletePlayer(@PathVariable Long id, @RequestBody Player player) {
+
+        if (playerServiceBean.delete(id)) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    // Get a player
+    @RequestMapping(method = RequestMethod.GET, value = "/player/{id}")
+    public ResponseEntity getPlayer(@PathVariable Long id) {
+
+        Player match = null;
+        match = playerServiceBean.getPlayer(id);
+
+        if (match != null) {
+            return new ResponseEntity<>(match, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Get player by type
+    @RequestMapping(method = RequestMethod.GET, value = "/player/players/{type}&{name}")
+    public ResponseEntity getPlayerByType(@PathVariable Play.Type type, @PathVariable String name) {
+        List<Player> matchList = playerServiceBean.getPlayerssByType(type, name);
+
+
+        if (matchList.size() > 0) {
+            return new ResponseEntity<>(matchList.toArray(new Player[0]), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

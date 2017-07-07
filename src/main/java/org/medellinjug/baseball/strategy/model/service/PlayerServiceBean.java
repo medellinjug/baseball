@@ -1,5 +1,6 @@
 package org.medellinjug.baseball.strategy.model.service;
 
+import org.medellinjug.baseball.strategy.model.entity.Play;
 import org.medellinjug.baseball.strategy.model.entity.Player;
 
 import java.util.Comparator;
@@ -32,6 +33,22 @@ public class PlayerServiceBean {
 
         return match;
     }
+
+
+    public List<Player> getPlayerssByType(Play.Type type, String name) {
+        if (type != null && name != null && name.length() > 0) {
+            return eList.stream().filter(p -> p.getType().equals(type) && p.getFullName().toUpperCase().contains(name.toUpperCase())).collect(Collectors.toList());
+        } else if (type != null) {
+            return eList.stream().filter(p -> p.getType().equals(type)).collect(Collectors.toList());
+        } else if (name != null && name.length() > 0) {
+            return eList.stream().filter(p -> p.getFullName().toUpperCase().contains(name.toUpperCase())).collect(Collectors.toList());
+
+        } else {
+            return eList;
+        }
+    }
+
+
 
 
     public  boolean add(Player player) {
