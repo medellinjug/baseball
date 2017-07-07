@@ -31,7 +31,7 @@ $scope.goHome = function(){
 			$scope.showPlayList = true;
 		}else{
 			$scope.formTitle = "Add New Play"
-
+            $scope.id = "";
 			$scope.code = "";
 			$scope.name = "";
 			$scope.type = null;
@@ -72,13 +72,14 @@ $scope.goHome = function(){
 	//Add/Update Employee
 	$scope.submitPlay = function(){
 		var addPlay ={
+		          id:$scope.id,
                   code:$scope.code,
                   name:$scope.name,
                   type:$scope.type
                 };
 		
 		var res;
-		if ($scope.id == null){
+		if ($scope.id == ""){
 			res = $http.post($scope.urlServicePlay, JSON.stringify(addPlay), {
 				headers: { 'Content-Type': 'application/json'}
 				});
@@ -448,11 +449,11 @@ $scope.goHome = function(){
             $scope.showPlayerList = true;
         }else{
             $scope.formTitle = "Add New Player"
+            $scope.id = null;
 
-            $scope.id = "";
             $scope.fullName = "";
             $scope.type = null;
-
+            $scope.player = null;
 
             $scope.showNewForm = true;
             $scope.showPlayerList = false;
@@ -463,21 +464,37 @@ $scope.goHome = function(){
 
 //add/update player
     $scope.submitPlayer = function(){
-        var addPlayer ={
-            code:$scope.id,
-            name:$scope.fullName,
-            type:$scope.type
-        };
+
+
+       if($scope.player==null){
+
+            var addPlayer ={
+
+                fullName:$scope.fullName,
+                type:$scope.type
+            };
+        }else{
+          var updPlayer ={
+                        id:$scope.player.id,
+                        fullName:$scope.fullName,
+                        type:$scope.type
+                    };
+        }
 
         var res;
+
+
         if ($scope.id == null){
+
             res = $http.post($scope.urlServicePlayer, JSON.stringify(addPlayer), {
                 headers: { 'Content-Type': 'application/json'}
             });
         }else{
-            res = $http.put($scope.urlServicePlayer+"/"+$scope.id, JSON.stringify(addPlayer), {
+
+            res = $http.put($scope.urlServicePlayer+"/"+$scope.id, JSON.stringify(updPlayer), {
                 headers: { 'Content-Type': 'application/json'}});
         }
+
         res.success(function(data, status, headers, config) {
             $scope.message = data;
             $scope.getPlayers();
@@ -522,8 +539,11 @@ $scope.goHome = function(){
     }
 
     $scope.showDetailPlayer = function(){
-        $scope.showDivPlayer(false);
+        //$scope.showDivPlayer(false);
+        $scope.showNewForm = true;
+                    $scope.showPlayerList = false;
         $scope.formTitle = "Update Player"
+
         $scope.id = $scope.player.id;
         $scope.fullName = $scope.player.fullName;
         $scope.type = $scope.player.type;
