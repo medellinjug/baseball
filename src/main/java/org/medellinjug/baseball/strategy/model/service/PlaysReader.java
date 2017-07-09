@@ -6,17 +6,21 @@ import org.medellinjug.baseball.strategy.model.entity.Play;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.medellinjug.baseball.strategy.model.entity.Player;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created by Hilmer on 25/06/17.
  * MedellinJUG.org
  */
 public class PlaysReader {
-    private static final CopyOnWriteArrayList<Play> eList = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<Play> ePlayList = new CopyOnWriteArrayList<>();
     private static final CopyOnWriteArrayList<Player> ePlayerList = new CopyOnWriteArrayList<>();
 
     static {
@@ -83,7 +87,7 @@ public class PlaysReader {
 
             Play[] myPlayss = mapper.readValue(jsonString, Play[].class);
 
-            eList.addAll(Arrays.asList(myPlayss));
+            ePlayList.addAll(Arrays.asList(myPlayss));
             //eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
 
 
@@ -101,20 +105,56 @@ public class PlaysReader {
 
 
             ObjectMapper mapper = new ObjectMapper();
-            Player[] myPlayerss = mapper.readValue(jsonString, Player[].class);
+           /*
+            Player player = new Player(1L, "Hacm", Play.Type.PITCH);
+            //Object to JSON in file
+            mapper.writeValue(new File("player.json"), player);
+            //Object to JSON in String
+            String jsonInString = mapper.writeValueAsString(player);
+            System.out.println(jsonInString);
+            //Convert object to JSON string and pretty print
+            jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(player);
+            System.out.println(jsonInString);*/
+
+
+            Player[] myPlayerss = mapper.readValue(new File("./playerss.json"), Player[].class);
+            System.out.println("myPlayerss:" + myPlayerss);
+            //Player[] myPlayerss = mapper.readValue(jsonString, Player[].class);
+
+
             ePlayerList.addAll(Arrays.asList(myPlayerss));
-            //eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
+
+            Map<Play.Type,List<Play>> playsByType = ePlayList.stream().collect(Collectors.groupingBy(Play::getType));
+
+            for(Player player:ePlayerList){
+                if(player.getPlayss()!=null) {
+                    List<Play> playListByType = playsByType.get(player.getType());
+
+                    player.getPlayss().removeIf(p->!playListByType.stream().anyMatch(q->q.getCode().equals(p)));
+
+                    if(player.getPlayss().isEmpty()){
+                        break;
+                    }
+                    player.setPlayList(new ArrayList<>());
+                    for (String codePlay:player.getPlayss()) {
+                        Play play = playListByType.parallelStream()
+                                .filter(p -> p.getCode().equals(codePlay)).findFirst().orElse(null);
+
+                        player.getPlayList().add(play);
+
+
+                    }
+                }
+            }
+
+
+            /*eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
 
             Player player1 = ePlayerList.get(0);
             player1.setPlayList(new ArrayList<>());
             player1.getPlayList().add(getPlay(player1.getType(), 101L));
             player1.getPlayList().add(getPlay(player1.getType(), 102L));
-            /*player1.getPlayList().add(getPlay(player1.getType(), 103L));
-            player1.getPlayList().add(getPlay(player1.getType(), 104L));
-            player1.getPlayList().add(getPlay(player1.getType(), 105L));
-            player1.getPlayList().add(getPlay(player1.getType(), 110L));
-            player1.getPlayList().add(getPlay(player1.getType(), 111L));
-            player1.getPlayList().add(getPlay(player1.getType(), 112L));*/
+
             player1.getPlayList().add(getPlay(player1.getType(), 113L));
             player1.getPlayList().add(getPlay(player1.getType(), 114L));
 
@@ -124,12 +164,8 @@ public class PlaysReader {
             player2.getPlayList().add(getPlay(player2.getType(), 101L));
             player2.getPlayList().add(getPlay(player2.getType(), 102L));
             player2.getPlayList().add(getPlay(player2.getType(), 103L));
-            player2.getPlayList().add(getPlay(player2.getType(), 104L));/*
-            player2.getPlayList().add(getPlay(player2.getType(), 106L));
-            player2.getPlayList().add(getPlay(player2.getType(), 107L));
-            player2.getPlayList().add(getPlay(player2.getType(), 108L));
-            player2.getPlayList().add(getPlay(player2.getType(), 109L));*/
-
+            player2.getPlayList().add(getPlay(player2.getType(), 104L));
+            */
 
 
         } catch (IOException exception) {
@@ -142,7 +178,7 @@ public class PlaysReader {
     private PlaysReader(){}
 
     public static CopyOnWriteArrayList<Play> getInstance(){
-        return eList;
+        return ePlayList;
     }
 
 
@@ -150,7 +186,7 @@ public class PlaysReader {
 
 
     private static Play getPlay(Play.Type type, Long id){
-        return eList.stream()
+        return ePlayList.stream()
                 .filter(p->p.getType().equals(type) && p.getId().equals(id)).findFirst().get();
 
     }

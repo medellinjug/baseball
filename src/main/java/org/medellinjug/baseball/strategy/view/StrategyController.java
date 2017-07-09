@@ -87,7 +87,7 @@ public class StrategyController {
     }
     // Delete a play
     @RequestMapping(method = RequestMethod.DELETE, value = "/play/{id}")
-    public ResponseEntity delete(@PathVariable Long id, @RequestBody Play play) {
+    public ResponseEntity delete(@PathVariable Long id) {
 
         if (playServiceBean.delete(id)) {
             return new ResponseEntity<>(null, HttpStatus.OK);
@@ -209,7 +209,7 @@ public class StrategyController {
     }
     // Delete a player
     @RequestMapping(method = RequestMethod.DELETE, value = "/player/{id}")
-    public ResponseEntity deletePlayer(@PathVariable Long id, @RequestBody Player player) {
+    public ResponseEntity deletePlayer(@PathVariable Long id) {
 
         if (playerServiceBean.delete(id)) {
             return new ResponseEntity<>(null, HttpStatus.OK);

@@ -111,6 +111,17 @@
                     <div class="peopleContent">
                         <h4>{{player.id}} {{player.fullName}}</h4>
                         {{player.type}}<br>
+                        <h4>
+                        Plays:
+                        </h4>
+
+                        <div ng-repeat="play in player.playList">
+                            <h7>{{play.code}} {{play.name}}</h7>
+                        </div>
+
+                        <div ng-show="!player.playList.length" >
+                            No plays defined for player
+                        </div>
 
                     </div>
                 </div>
@@ -134,15 +145,10 @@
                     <form class="form-horizontal" name="form" novalidate ng-submit="form.$valid && submitPlayer()">
 
 
-                        <div class="form-group" ng-class="{ 'has-error': form.id.$invalid && form.$submitted}">
-                            <label class="control-label col-xs-3" for="id">Id:</label>
-                            <div class="col-xs-5">
-                                <input type="text" id="id"  name="id" ng-model="id" value="" class="form-control" required>
-                            </div>
-                        </div>
+
 
                         <div class="form-group" ng-class="{ 'has-error': form.fullName.$invalid && form.$submitted}">
-                            <label class="control-label col-xs-3" for="fullName">fullName:</label>
+                            <label class="control-label col-xs-3" for="fullName">Name:</label>
                             <div class="col-xs-5">
                                 <input type="text" id="fullName" name="fullName" ng-model="fullName" value="" class="form-control" required>
                             </div>
@@ -160,6 +166,16 @@
 
                             </div>
                         </div>
+
+
+                        <label ng-repeat="play in playList" class="checkbox-inline">
+                            <input type="checkbox"  ng-checked="checkPlaySelected(play, player.playList)"
+                                   ng-click="togglePlay(play, player.playList)"
+                            > {{play.code}} {{play.name}}
+                        </label>
+
+
+
 
                         <br><br>
                         <div style=" text-align: center;">
