@@ -53,8 +53,11 @@ public class PlayerServiceBean {
 
     public  boolean add(Player player) {
 
+
+        Long next = (this.eList.stream().mapToLong(p -> p.getId()).max().orElse(0L)) + 1;
+
         Player newPlayer =
-                new Player(player.getId(), player.getFullName(), player.getType());
+                new Player(next, player.getFullName(), player.getType());
 
         eList.add(newPlayer);
 
@@ -64,6 +67,8 @@ public class PlayerServiceBean {
 
     public boolean update(Long id, Player player) {
         int matchIndex = -1;
+
+
 
         matchIndex = eList.stream()
                 .filter(e -> e.getId().equals(id))

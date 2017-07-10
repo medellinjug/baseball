@@ -64,6 +64,7 @@
             padding: 0px;
             display: flex;*/
         }
+
     </style>
 
 </head>
@@ -88,7 +89,7 @@
                 </div>
 
                 <div class="col-xs-1">
-                    <button class="btn btn-success" id="searchButton" type="button" >
+                    <button class="btn btn-success" id="searchButton" type="button">
                         <span class="glyphicon glyphicon-search"></span> Search
                     </button>
                 </div>
@@ -98,8 +99,9 @@
                     </button>
                 </div>
             </form>
-            <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"  ng-click="goHome()">
-            <input class="btn btn-primary" id="addButton" value="Add New" type="button"  ng-click="showDivPlayer(false);reset(form)">
+            <input type="button" tabindex="-1" class="btn btn-default" value="Cancel" ng-click="goHome()">
+            <input class="btn btn-primary" id="addButton" value="Add New" type="button"
+                   ng-click="showDivPlayer(false);reset(form)">
 
         </div>
         </br></br>
@@ -123,28 +125,25 @@
         <div class="col-sm-5 col-md-offset-2">
             <div class="panel panel-info " class="click-element animate-show" ng-show="showNewForm">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
-                        <button class="btn btn-primary" id="delete"  type="button" ng-click="deletePlayer()"  style="float: right; position: relative; bottom: 9px;">
-                            <span class="glyphicon glyphicon-trash"></span> Delete
-                        </button>
-                    </div> </h3>
+                    <h3 class="panel-title">
+                        <div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
+                            <button class="btn btn-primary" id="delete" type="button" ng-click="deletePlayer()"
+                                    style="float: right; position: relative; bottom: 9px;">
+                                <span class="glyphicon glyphicon-trash"></span> Delete
+                            </button>
+                        </div>
+                    </h3>
                 </div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" name="form" novalidate ng-submit="form.$valid && submitPlayer()">
 
 
-                        <div class="form-group" ng-class="{ 'has-error': form.id.$invalid && form.$submitted}">
-                            <label class="control-label col-xs-3" for="id">Id:</label>
-                            <div class="col-xs-5">
-                                <input type="text" id="id"  name="id" ng-model="id" value="" class="form-control" required>
-                            </div>
-                        </div>
-
                         <div class="form-group" ng-class="{ 'has-error': form.fullName.$invalid && form.$submitted}">
                             <label class="control-label col-xs-3" for="fullName">fullName:</label>
                             <div class="col-xs-5">
-                                <input type="text" id="fullName" name="fullName" ng-model="fullName" value="" class="form-control" required>
+                                <input type="text" id="fullName" name="fullName" ng-model="fullName" value=""
+                                       class="form-control" required>
                             </div>
                         </div>
 
@@ -153,7 +152,8 @@
                             <label class="control-label col-xs-3" for="type">Type:</label>
                             <div class="col-xs-5">
 
-                                <select id="type" name="type" value="type" ng-model="type" class="form-control" required>
+                                <select id="type" name="type" value="type" ng-model="type" class="form-control"
+                                        required>
                                     <option value="HIT">Hit</option>
                                     <option value="PITCH">Pitch</option>
                                 </select>
@@ -163,24 +163,19 @@
 
                         <br><br>
                         <div style=" text-align: center;">
-                            <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"  ng-click="showDivPlayer(true)">
+                            <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                                   ng-click="showDivPlayer(true)">
                             <input type="submit" tabindex="-1" class="btn btn-success" value="Save">
                         </div>
                     </form>
                 </div>
 
 
-
-
-
             </div>
         </div>
 
 
-
-
     </div>
-
 
 
 </div>
