@@ -3,6 +3,7 @@ package org.medellinjug.baseball.strategy.model.service;
 import org.medellinjug.baseball.strategy.model.entity.Play;
 import org.medellinjug.baseball.strategy.model.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,12 +53,12 @@ public class PlayerServiceBean {
 
 
     public  boolean add(Player player) {
-
-
         Long next = (this.eList.stream().mapToLong(p -> p.getId()).max().orElse(0L)) + 1;
 
+
+
         Player newPlayer =
-                new Player(next, player.getFullName(), player.getType());
+                new Player(next, player.getFullName(), player.getType(), player.getPlayList());
 
         eList.add(newPlayer);
 
@@ -65,11 +66,15 @@ public class PlayerServiceBean {
     }
 
 
+
+
     public boolean update(Long id, Player player) {
         int matchIndex = -1;
+        if(player.getPlayList()==null){
+            player.setPlayList(new ArrayList<>());
+        }
 
-
-
+        player.setPlayss(player.getPlayList().stream().map(p->p.getCode()).collect(Collectors.toList()));
         matchIndex = eList.stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()

@@ -64,7 +64,7 @@ $scope.goHome = function(){
 		$http.get($scope.urlServicePlay+"/"+id).
 			then(function(response) {
 				$scope.play = response.data;
-				$scope.showDetail();				
+				$scope.showDetailPlay();
 			});
 		$scope.searchText = "";		
 	}
@@ -115,21 +115,15 @@ $scope.goHome = function(){
 	//Search Plays
 	$scope.searchPlays = function (){
             $scope.playList = null;
+
     		$http.get($scope.urlServicePlay+"/plays/"+$scope.searchType+"&"+$scope.searchText).
     			then(function(response) {
     				$scope.playList = response.data;
 
     			});
     	}
-	/*
-	$scope.searchPlays = function (){
-		$http.get($scope.urlServicePlay+"/"+$scope.searchType+"/"+$scope.searchText).
-			then(function(response) {
-				$scope.playList = response.data;
-			});
-	}*/
-	
-	$scope.showDetail = function(){		
+
+	$scope.showDetailPlay = function(){
 		$scope.showDivs(false);
 		$scope.showPhoto = true;
 		$scope.formTitle = "Update Play"
@@ -448,12 +442,16 @@ $scope.goHome = function(){
             $scope.showNewForm = false;
             $scope.showPlayerList = true;
         }else{
-            $scope.formTitle = "Add New Player"
+            $scope.formTitle = "Add New Player";
             $scope.id = null;
 
             $scope.fullName = "";
             $scope.type = null;
+
+
             $scope.player = null;
+            //$scope.playList = null;
+
 
             $scope.showNewForm = true;
             $scope.showPlayerList = false;
@@ -477,7 +475,9 @@ $scope.goHome = function(){
           var updPlayer ={
                         id:$scope.player.id,
                         fullName:$scope.fullName,
-                        type:$scope.type
+                        type:$scope.type,
+                        playList:$scope.player.playList,
+                        playss:$scope.player.playss
                     };
         }
 
@@ -541,14 +541,74 @@ $scope.goHome = function(){
     $scope.showDetailPlayer = function(){
         //$scope.showDivPlayer(false);
         $scope.showNewForm = true;
-                    $scope.showPlayerList = false;
+        $scope.showPlayerList = false;
         $scope.formTitle = "Update Player"
 
         $scope.id = $scope.player.id;
         $scope.fullName = $scope.player.fullName;
         $scope.type = $scope.player.type;
 
+        $scope.searchType= $scope.player.type;
+        $scope.searchText="";
+        $scope.searchPlays();
+//https://vitalets.github.io/checklist-model/ helpful URL TO CHECK BOX
+//https://material.angularjs.org/latest/demo/checkbox
     }
+
+
+
+
+   $scope.checkPlaySelected = function (play, playList){
+        var i=0, len=playList.length;
+        for (; i<len; i++) {
+          if (playList[i].code == play.code) {
+            return true;
+          }
+        }
+        return false;
+    }
+
+
+    $scope.togglePlay = function (play, playList) {
+        var idx = -1;
+        var i=0, len=playList.length;
+        for (; i<len; i++) {
+
+          if ( playList[i].code == play.code) {
+            idx = i;
+
+            break
+          }
+        }
+
+
+        if (idx > -1) {
+          playList.splice(idx, 1);
+        }else {
+          playList.push(play);
+        }
+
+
+    };
+
+    $scope.checkSelected = function (item, list){
+
+        return list.indexOf(item) > -1;
+
+    }
+
+
+    $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+
+        if (idx > -1) {
+          list.splice(idx, 1);
+        }
+        else {
+          list.push(item);
+        }
+    };
+
 
     //Search Players
     $scope.searchPlayers = function (){
