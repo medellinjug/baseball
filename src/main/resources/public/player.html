@@ -149,12 +149,7 @@
                     <form class="form-horizontal" name="form" novalidate ng-submit="form.$valid && submitPlayer()">
 
 
-                        <div class="form-group" ng-class="{ 'has-error': form.id.$invalid && form.$submitted}">
-                            <label class="control-label col-xs-3" for="id">Id:</label>
-                            <div class="col-xs-5">
-                                <input type="text" id="id"  name="id" ng-model="id" value="" class="form-control" required>
-                            </div>
-                        </div>
+
 
                         <div class="form-group" ng-class="{ 'has-error': form.fullName.$invalid && form.$submitted}">
                             <label class="control-label col-xs-3" for="fullName">Name:</label>
