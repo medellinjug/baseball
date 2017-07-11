@@ -1,6 +1,12 @@
 package org.medellinjug.baseball.strategy.model.service;
 
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.medellinjug.baseball.strategy.model.entity.Play;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +14,9 @@ import org.medellinjug.baseball.strategy.model.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +31,7 @@ import java.util.stream.Collectors;
 public class PlaysReader {
     private static final CopyOnWriteArrayList<Play> ePlayList = new CopyOnWriteArrayList<>();
     private static final CopyOnWriteArrayList<Player> ePlayerList = new CopyOnWriteArrayList<>();
+    private static final String filePathString = new String("playerss.json");
 
     static {
 
@@ -117,30 +127,45 @@ public class PlaysReader {
             System.out.println(jsonInString);*/
 
 
-            Player[] myPlayerss = mapper.readValue(new File("./playerss.json"), Player[].class);
-            System.out.println("myPlayerss:" + myPlayerss);
-            //Player[] myPlayerss = mapper.readValue(jsonString, Player[].class);
+//URL HELP https://www.mkyong.com/java/jackson-2-convert-java-object-to-from-json/
+            if(Files.notExists(Paths.get(PlaysReader.filePathString))) {
+                // do something
+                //Files.createFile(Paths.get(filePathString));
+                mapper.writeValue(new File(PlaysReader.filePathString), new String[0]);
+                //System.out.println("Creating an empty file" );
+            }else {
 
 
-            ePlayerList.addAll(Arrays.asList(myPlayerss));
+                Player[] myPlayerss = mapper.readValue(new File(PlaysReader.filePathString), Player[].class);
 
-            Map<Play.Type,List<Play>> playsByType = ePlayList.stream().collect(Collectors.groupingBy(Play::getType));
 
-            for(Player player:ePlayerList){
-                if(player.getPlayss()!=null) {
-                    List<Play> playListByType = playsByType.get(player.getType());
+                ePlayerList.addAll(Arrays.asList(myPlayerss));
 
-                    player.getPlayss().removeIf(p->!playListByType.stream().anyMatch(q->q.getCode().equals(p)));
 
-                    if(player.getPlayss().isEmpty()){
-                        break;
-                    }
-                    player.setPlayList(new ArrayList<>());
-                    for (String codePlay:player.getPlayss()) {
-                        Play play = playListByType.parallelStream()
-                                .filter(p -> p.getCode().equals(codePlay)).findFirst().orElse(null);
+                Map<Play.Type, List<Play>> playsByType = ePlayList.stream().collect(Collectors.groupingBy(Play::getType));
 
-                        player.getPlayList().add(play);
+
+                for (Player player : ePlayerList) {
+
+                    if (player.getPlayss() != null) {
+                        List<Play> playListByType = playsByType.get(player.getType());
+
+                        player.getPlayss().removeIf(p -> !playListByType.stream().anyMatch(q -> q.getCode().equals(p)));
+
+                        if (player.getPlayss().isEmpty()) {
+                            break;
+                        }
+                        player.setPlayList(new ArrayList<>());
+
+                        for (String codePlay : player.getPlayss()) {
+
+                            Play play = playListByType.stream()
+                                    .filter(p -> p.getCode().equals(codePlay)).findFirst().orElse(null);
+
+                            player.getPlayList().add(play);
+
+
+                        }
 
 
                     }
@@ -148,29 +173,10 @@ public class PlaysReader {
             }
 
 
-            /*eList.addAll(Arrays.asList(myPlayss).stream().sorted(Comparator.comparing(Play::getType).thenComparing(Play::getName)).collect(Collectors.toList()));
 
-            Player player1 = ePlayerList.get(0);
-            player1.setPlayList(new ArrayList<>());
-            player1.getPlayList().add(getPlay(player1.getType(), 101L));
-            player1.getPlayList().add(getPlay(player1.getType(), 102L));
-
-            player1.getPlayList().add(getPlay(player1.getType(), 113L));
-            player1.getPlayList().add(getPlay(player1.getType(), 114L));
-
-
-            Player player2 = ePlayerList.get(1);
-            player2.setPlayList(new ArrayList<>());
-            player2.getPlayList().add(getPlay(player2.getType(), 101L));
-            player2.getPlayList().add(getPlay(player2.getType(), 102L));
-            player2.getPlayList().add(getPlay(player2.getType(), 103L));
-            player2.getPlayList().add(getPlay(player2.getType(), 104L));
-            */
-
-
-        } catch (IOException exception) {
-            System.out.println("Error: " + exception.getMessage());
-            exception.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -182,12 +188,66 @@ public class PlaysReader {
     }
 
 
+    public static void createPlayerss(){
+
+        //ObjectMapper mapper   = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        //ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter().withoutAttribute("playList").withoutAttribute("id");
 
 
 
-    private static Play getPlay(Play.Type type, Long id){
-        return ePlayList.stream()
-                .filter(p->p.getType().equals(type) && p.getId().equals(id)).findFirst().get();
+
+        String[] ignorableFieldNames = { "id", "playList" };
+        FilterProvider filters = new SimpleFilterProvider()
+                .addFilter("filter properties by name",
+                        SimpleBeanPropertyFilter.serializeAllExcept(
+                                ignorableFieldNames));
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.setFilterProvider(filters);
+
+
+
+       // ObjectWriter writer = mapper.writer(filters);
+
+
+
+        //FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter",SimpleBeanPropertyFilter.filterOutAllExcept("name"));
+// and then serialize using that filter provider:
+//http://www.agile-code.com/blog/how-to-use-jackson-data-binding-api-in-java-web-development/
+
+        try {
+
+            mapper.setFilterProvider(filters)
+                    .writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
+
+/*
+            writer.writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
+
+            String jsonInString = writer.writeValueAsString(PlaysReader.ePlayerList.toArray());
+            System.out.println(jsonInString);
+            System.out.println("*************************************");
+
+
+
+            String jsonInString2 = writer.withoutAttribute("playList").withoutAttribute("id").writeValueAsString(PlaysReader.ePlayerList.get(0));
+            System.out.println(jsonInString2);
+
+
+            Player player = PlaysReader.ePlayerList.get(0);
+            String dtoAsString = mapper.writer(filters).writeValueAsString(player);
+            System.out.println(dtoAsString);*/
+            /*
+            HC works OK but we need no print id and playList
+            ObjectMapper mapper = new ObjectMapper();
+            mapper .writerWithDefaultPrettyPrinter().withoutAttribute("playList").withoutAttribute("id")
+                    .writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray())
+            ;*/
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 

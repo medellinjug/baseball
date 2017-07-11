@@ -83,6 +83,9 @@ public class PlayerServiceBean {
 
         if (matchIndex > -1) {
             eList.set(matchIndex, player);
+
+            PlaysReader.createPlayerss();
+
             return true;
         } else {
             return false;
@@ -101,6 +104,7 @@ public class PlayerServiceBean {
 
         if (matchIndex > -1) {
             eList.remove(matchIndex);
+            PlaysReader.createPlayerss();
             return true;
         } else {
             return false;
