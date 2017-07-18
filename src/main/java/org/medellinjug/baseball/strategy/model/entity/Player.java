@@ -1,7 +1,9 @@
 package org.medellinjug.baseball.strategy.model.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.medellinjug.baseball.strategy.model.entity.PlayerView.All;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +13,19 @@ import java.util.stream.Collectors;
  * Created by Hilmer on 30/06/17.
  * MedellinJUG.org
  */
-@JsonFilter("myFilter")
+//@JsonFilter("myFilter")
+
 public class Player {
 
-
+    @JsonView(PlayerView.AllWithPlays.class)
     private Long id;
-
+    @JsonView(PlayerView.All.class)
     private String fullName;
-
+    @JsonView(PlayerView.All.class)
     private Play.Type type;
+    @JsonView(PlayerView.AllWithPlays.class)
     private List<Play> playList;
-
+    @JsonView(PlayerView.All.class)
     private List<String> playss;
 
     public Player() {

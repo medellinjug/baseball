@@ -116,6 +116,8 @@
                         Plays:
                         </h4>
 
+
+
                         <div ng-repeat="play in player.playList">
                             <h7>{{play.code}} {{play.name}}</h7>
                         </div>
@@ -163,7 +165,7 @@
                             <label class="control-label col-xs-3" for="type">Type:</label>
                             <div class="col-xs-5">
 
-                                <select id="type" name="type" value="type" ng-model="type" class="form-control" required>
+                                <select id="type" name="type" value="type" ng-model="type" class="form-control"  required>
                                     <option value="HIT">Hit</option>
                                     <option value="PITCH">Pitch</option>
                                 </select>

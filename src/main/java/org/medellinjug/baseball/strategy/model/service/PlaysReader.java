@@ -11,6 +11,7 @@ import org.medellinjug.baseball.strategy.model.entity.Play;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.medellinjug.baseball.strategy.model.entity.Player;
+import org.medellinjug.baseball.strategy.model.entity.PlayerView;
 
 import java.io.File;
 import java.io.IOException;
@@ -107,11 +108,6 @@ public class PlaysReader {
 
 
         try {
-        String jsonString = "["
-                + " {\"id\":1,\"fullName\":\"Hilmer\",\"type\":\"PITCH\"}"
-                +", {\"id\":2,\"fullName\":\"Alirio\",\"type\":\"PITCH\"}"
-
-                +"]";
 
 
             ObjectMapper mapper = new ObjectMapper();
@@ -145,7 +141,13 @@ public class PlaysReader {
                 Map<Play.Type, List<Play>> playsByType = ePlayList.stream().collect(Collectors.groupingBy(Play::getType));
 
 
+                Long id=1L;
+
                 for (Player player : ePlayerList) {
+
+
+                    player.setId(id++);
+
 
                     if (player.getPlayss() != null) {
                         List<Play> playListByType = playsByType.get(player.getType());
@@ -194,18 +196,18 @@ public class PlaysReader {
         //ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter().withoutAttribute("playList").withoutAttribute("id");
 
 
-
+        /*
 
         String[] ignorableFieldNames = { "id", "playList" };
         FilterProvider filters = new SimpleFilterProvider()
                 .addFilter("filter properties by name",
                         SimpleBeanPropertyFilter.serializeAllExcept(
-                                ignorableFieldNames));
+                                ignorableFieldNames));*/
 
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.setFilterProvider(filters);
+        //mapper.setFilterProvider(filters);
 
 
 
@@ -219,8 +221,8 @@ public class PlaysReader {
 
         try {
 
-            mapper.setFilterProvider(filters)
-                    .writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
+
+            mapper.writerWithView(PlayerView.All.class).writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
 
 /*
             writer.writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());

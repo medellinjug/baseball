@@ -55,8 +55,6 @@ public class PlayerServiceBean {
     public  boolean add(Player player) {
         Long next = (this.eList.stream().mapToLong(p -> p.getId()).max().orElse(0L)) + 1;
 
-
-
         Player newPlayer =
                 new Player(next, player.getFullName(), player.getType(), player.getPlayList());
 

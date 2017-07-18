@@ -1,0 +1,13 @@
+[ {
+  "fullName" : "ddd",
+  "type" : "HIT",
+  "playss" : [ "T-SA", "RP-T" ]
+}, {
+  "fullName" : "ww",
+  "type" : "HIT",
+  "playss" : [ "T-SO", "EM", "RB" ]
+}, {
+  "fullName" : "aa",
+  "type" : "HIT",
+  "playss" : [ "T-SA", "RP-T", "T-SO" ]
+} ]
