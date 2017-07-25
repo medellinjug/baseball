@@ -1,13 +1,13 @@
 [ {
-  "fullName" : "ddd",
-  "type" : "HIT",
-  "playss" : [ "T-SA", "RP-T" ]
+  "fullName" : "Sandra",
+  "type" : "PITCH",
+  "playss" : [ "PCO", "PO", "KN" ]
 }, {
-  "fullName" : "ww",
+  "fullName" : "Amy",
   "type" : "HIT",
-  "playss" : [ "T-SO", "EM", "RB" ]
+  "playss" : [ "RB1", "RB2", "RB>", "RB", "EM-RB" ]
 }, {
-  "fullName" : "aa",
+  "fullName" : "Hilmer",
   "type" : "HIT",
-  "playss" : [ "T-SA", "RP-T", "T-SO" ]
+  "playss" : [ "T-SO", "RP-T" ]
 } ]

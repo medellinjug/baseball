@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="col-xs-1">
-                    <button class="btn btn-success" id="searchButton" type="button">
+                    <button class="btn btn-success" id="searchButton" type="button" ng-click="searchPlayers()">
                         <span class="glyphicon glyphicon-search"></span> Search
                     </button>
                 </div>
@@ -139,7 +139,9 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
-                            <button class="btn btn-primary" id="delete" type="button" ng-click="deletePlayer()"
+                            <button
+                                    ng-show="player.id!=null"
+                                    class="btn btn-primary" id="delete" type="button" ng-click="deletePlayer()"
                                     style="float: right; position: relative; bottom: 9px;">
                                 <span class="glyphicon glyphicon-trash"></span> Delete
                             </button>
@@ -163,14 +165,23 @@
 
                         <div class="form-group" ng-class="{ 'has-error': form.type.$invalid && form.$submitted}">
                             <label class="control-label col-xs-3" for="type">Type:</label>
-                            <div class="col-xs-5">
+                            <div class="col-xs-5"  ng-show="!player.playList.length" >
 
-                                <select id="type" name="type" value="type" ng-model="type" class="form-control"  required>
+                                <select id="type" name="type" value="type" ng-model="type" class="form-control"  required
+                                        ng-change="changePlayerType()"
+                                >
                                     <option value="HIT">Hit</option>
                                     <option value="PITCH">Pitch</option>
                                 </select>
 
                             </div>
+                                <div class="col-xs-5" ng-show="player.playList.length">
+                                    {{type}}
+                            </div>
+
+
+
+
                         </div>
 
 

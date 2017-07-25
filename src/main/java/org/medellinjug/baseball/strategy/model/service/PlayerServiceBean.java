@@ -58,7 +58,11 @@ public class PlayerServiceBean {
         Player newPlayer =
                 new Player(next, player.getFullName(), player.getType(), player.getPlayList());
 
+        player.setPlayss(player.getPlayList().stream().map(p->p.getCode()).collect(Collectors.toList()));
+
         eList.add(newPlayer);
+
+        PlaysReader.createPlayerss();
 
         return true;
     }

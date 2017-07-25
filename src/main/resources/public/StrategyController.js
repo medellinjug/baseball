@@ -116,7 +116,14 @@ $scope.goHome = function(){
 	$scope.searchPlays = function (){
             $scope.playList = null;
 
-    		$http.get($scope.urlServicePlay+"/plays/"+$scope.searchType+"&"+$scope.searchText).
+        var params = "&"+$scope.searchText;
+        if($scope.searchType!=null){
+            params = $scope.searchType+"&"+$scope.searchText;
+        }
+
+
+
+    		$http.get($scope.urlServicePlay+"/plays/"+params).
     			then(function(response) {
     				$scope.playList = response.data;
 
@@ -449,14 +456,27 @@ $scope.goHome = function(){
             $scope.type = null;
 
 
-            $scope.player = null;
+            $scope.player = { playList:[]};
             //$scope.playList = null;
-
+            $scope.player_playList = [];
 
             $scope.showNewForm = true;
             $scope.showPlayerList = false;
+
+            $scope.playList = null;
+
+
+
         }
     }
+  $scope.changePlayerType = function(){
+
+        $scope.searchType= $scope.type;
+        $scope.searchText="";
+        $scope.searchPlays();
+
+
+  }
 
 
 
@@ -464,20 +484,20 @@ $scope.goHome = function(){
     $scope.submitPlayer = function(){
 
 
-       if($scope.player==null){
+       if($scope.id==null){
 
             var addPlayer ={
 
                 fullName:$scope.fullName,
-                type:$scope.type
+                type:$scope.type,
+                 playList:$scope.player.playList
             };
         }else{
           var updPlayer ={
                         id:$scope.player.id,
                         fullName:$scope.fullName,
                         type:$scope.type,
-                        playList:$scope.player.playList,
-                        playss:$scope.player.playss
+                        playList:$scope.player.playList
                     };
         }
 
@@ -572,6 +592,7 @@ $scope.goHome = function(){
     $scope.togglePlay = function (play, playList) {
         var idx = -1;
         var i=0, len=playList.length;
+
         for (; i<len; i++) {
 
           if ( playList[i].code == play.code) {
@@ -587,6 +608,7 @@ $scope.goHome = function(){
         }else {
           playList.push(play);
         }
+
 
 
     };
@@ -613,7 +635,12 @@ $scope.goHome = function(){
     //Search Players
     $scope.searchPlayers = function (){
         $scope.playerList = null;
-        $http.get($scope.urlServicePlayer+"/players/"+$scope.searchType+"&"+$scope.searchText).
+        var params = "&"+$scope.searchText;
+        if($scope.searchType!=null){
+            params = $scope.searchType+"&"+$scope.searchText;
+        }
+
+        $http.get($scope.urlServicePlayer+"/players/"+params).
         then(function(response) {
             $scope.playerList = response.data;
 
