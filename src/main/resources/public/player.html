@@ -27,15 +27,15 @@
         .container {
             width: 90%;
             margin: auto;
-            display: flex;
+            /*display: flex;*/
         }
-        .peopleContent {
+        .playContent {
             flex-grow: 1;
         }
         .portrait {
             width: 120px;
         }
-        .peopleItem {
+        .playItem {
             width: 350px;
             border: 1px solid #777777;
             background: #FAFAFA;
@@ -43,7 +43,7 @@
             padding: 2px;
             display: flex;
         }
-        .peopleTitle {
+        .playTitle {
             width: 100%;
             background: #FAFAFA;
             margin: 3px;
@@ -76,7 +76,8 @@
     </div>
 </div>
 
-<div class="row">
+<div class="container">
+
     <div ng-controller="Baseball" ng-init="getPlayers()">
 
         <div class="click-element animate-show" ng-show="showPlayerList">
@@ -87,13 +88,22 @@
                     <input class="form-control " type="text" id="searchText" ng-model="searchText">
                 </div>
 
+                <div class="col-xs-2">
+                    <select id="searchType" class="form-control" ng-model="searchType">
+                        <option value=""></option>
+                        <option value="HIT">Hit</option>
+                        <option value="PITCH">Pitch</option>
+
+                    </select>
+                </div>
+
                 <div class="col-xs-1">
                     <button class="btn btn-success" id="searchButton" type="button" ng-click="searchPlayers()">
                         <span class="glyphicon glyphicon-search"></span> Search
                     </button>
                 </div>
                 <div class="col-xs-4">
-                    <button class="btn btn-danger" id="homeButton" type="button" ng-click="getPlayers()">
+                    <button class="btn btn-danger" id="homeButton" type="button" ng-click="goHome()">
                         <span class="glyphicon glyphicon-home"></span>
                     </button>
                 </div>
@@ -104,12 +114,12 @@
 
         </div>
         </br></br>
-        <div id="people" class="container" class="click-element animate-show" ng-show="showPlayerList">
+        <div id="play" class="container" class="click-element animate-show" ng-show="showPlayerList">
             <div class="row">
-                <div class="peopleItem col-sm-3" ng-repeat="player in playerList" ng-click="getPlayerById(player.id)"
+                <div class="playItem col-sm-3" ng-repeat="player in playerList" ng-click="getPlayerById(player.id)"
                      style="cursor: pointer">
 
-                    <div class="peopleContent">
+                    <div class="playContent">
                         <h4>{{player.fullName}}</h4>
                         {{player.type}}<br>
                         <h4>
@@ -213,8 +223,6 @@
 
 
     </div>
-
-
 
 </div>
 

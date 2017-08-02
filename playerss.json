@@ -1,7 +1,7 @@
 [ {
   "fullName" : "Sandra",
   "type" : "PITCH",
-  "playss" : [ "PCO", "PO", "KN" ]
+  "playss" : [ "PCO", "PO", "KN", "SL", "CU" ]
 }, {
   "fullName" : "Amy",
   "type" : "HIT",
@@ -10,4 +10,12 @@
   "fullName" : "Hilmer",
   "type" : "HIT",
   "playss" : [ "T-SO", "RP-T" ]
+}, {
+  "fullName" : "steven",
+  "type" : "HIT",
+  "playss" : [ "T-SO", "RP-T", "B-C" ]
+}, {
+  "fullName" : "MARCUS",
+  "type" : "PITCH",
+  "playss" : [ "FB4S-I", "FB4S-O", "FB2S-O" ]
 } ]

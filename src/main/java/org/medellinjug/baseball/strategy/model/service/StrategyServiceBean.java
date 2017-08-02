@@ -20,6 +20,16 @@ public class StrategyServiceBean {
 
     private final List<Strategy> eList = new ArrayList<>();
 
+
+    public List<Strategy> getStrategiesByType(Play.Type type) {
+        if (type != null) {
+            return eList.stream().filter(p -> p.getType().equals(type)).collect(Collectors.toList());
+        } else {
+            return eList;
+        }
+    }
+
+
     public Strategy createStrategy(Strategy strategy) throws PlayerNoFoundException {
 
         Play.Type type = strategy.getType();

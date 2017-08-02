@@ -29,10 +29,10 @@
     .container {
       width: 90%;
       margin: auto;
-	  display: flex;
+	  /*display: flex;*/
     }
 
-    .peopleContent {
+    .strategyContent {
       flex-grow: 1;
     }
 
@@ -40,8 +40,8 @@
       width: 120px;
     }
 
-    .peopleItem {
-      width: 350px;
+    .strategyItem {
+      width: 200px;
       border: 1px solid #777777;
       background: #FAFAFA;
       margin: 3px;
@@ -49,7 +49,7 @@
       display: flex;
     }
 
-    .peopleTitle {
+    .strategyTitle {
       width: 100%;
       background: #FAFAFA;
       margin: 3px;
@@ -84,6 +84,7 @@
 
 
 
+
     </style>
 
 </head>
@@ -95,189 +96,351 @@
         <h2>Cloud Baseball App</h2>
     </div>
 </div>
-<div class="row">
-<div ng-controller="Baseball" ng-init="goStrategy()">
+<div class="container">
+
+        <div ng-controller="Baseball" ng-init="goStrategy()">
 
 
-    <!--FORM1-->
+            <div class="click-element animate-show" ng-show="showStrategyList">
+                <h2>Strategies</h2>
+                <form>
 
-    <div class="col-sm-5 col-md-offset-2" ng-show="showNewStrategy">
-        <div class="panel panel-info" class="click-element animate-show">
+                    <div class="col-xs-2">
+                        <select id="searchType" class="form-control" ng-model="searchType">
+                            <option value=""></option>
+                            <option value="HIT">Hit</option>
+                            <option value="PITCH">Pitch</option>
 
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
-
+                        </select>
                     </div>
-                </h3>
-            </div>
-
-            <div class="panel-body">
-
-                <form class="form-horizontal" name="form" novalidate ng-submit="form.$valid && submitStrategy()">
-
-
-                    <div class="form-group" ng-class="{ 'has-error': form.rows.$invalid && form.$submitted}">
-                        <label class="control-label col-xs-3" for="rows">Rows:</label>
-                        <div class="col-xs-5">
-                            <input type="text" id="rows" name="rows" ng-model="rows" value=""
-                                   class="form-control input-sm"
-                                   required>
-                        </div>
+                    <div class="col-xs-1">
+                        <button class="btn btn-success" id="searchButton" type="button" ng-click="searchStrategies()">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
                     </div>
-
-
-                    <div class="form-group" ng-class="{ 'has-error': form.type.$invalid && form.$submitted}">
-                        <label class="control-label col-xs-3" for="type">Type:</label>
-                        <div class="col-xs-5">
-
-                            <select id="type" name="type" value="type" ng-model="type" class="form-control input-sm"
-                                    required>
-                                <option value="HIT">Hit</option>
-                                <option value="PITCH">Pitch</option>
-
-                            </select>
-                        </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-danger" id="homeButton" type="button" ng-click="goHome()()">
+                            <span class="glyphicon glyphicon-home"></span>
+                        </button>
                     </div>
-
-                    <br>
-                    <div style=" text-align: center;">
-
-
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Cancel" ng-click="goHome()">
-                        <input type="submit" tabindex="-1" class="btn btn-success" value="Continue">
-
-
-                    </div>
-
                 </form>
+                <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                       ng-click="goHome()">
+                <input class="btn btn-primary" id="addButton" value="Add New" type="button"
+                       ng-click="goAddStrategy();reset(form)">
+
             </div>
-        </div>
-    </div>
-    <!--GENERATOR-->
-    <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyPlayList">
+            </br></br>
+            <div id="strategy" class="container" class="click-element animate-show" ng-show="showStrategyList">
+                <div class="row">
+                    <div class="strategyItem col-sm-3" ng-repeat="strategy in strategyList" ng-click="getStrategyById(strategy.id)"
+                         style="cursor: pointer">
 
-        <form class="form-horizontal" name="form2" novalidate ng-submit="form2.$valid && generateStrategy(strategy)">
-            <div class="panel panel-info " class="click-element animate-show">
+                        <div class="strategyContent">
+                            <h4>{{strategy.type}} </h4>
+                            {{strategy.date | date : 'MMM d, y HH:mm'}}<br>
 
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <div id="formTitle2" ng-model="formTitle" style="padding:10px"> {{formTitle}}
 
                         </div>
-                    </h3>
+                    </div>
                 </div>
-
-
-                <div class="panel-body">
-
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" for="rows">Rows:</label>
-                        <div class="col-xs-5">
-                            {{strategy.rows}}
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" for="type">Type:</label>
-                        <div class="col-xs-5">
-                            {{strategy.type}}
-
-
-                        </div>
-                    </div>
-
-                    <br>
-
-                    <div style="text-align: center;">
-
-
-                        <input type="submit" tabindex="-1" class="btn btn-success" value="Generate">
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
-                               ng-click="goStrategy()">
-
-
-                    </div>
-
-
+                <div ng-show="!strategyList.length" class="alert alert-info col-sm-7">No strategies found matching your
+                    search
+                    criteria
                 </div>
-
             </div>
 
+            <!--FORM1-->
+
+            <div class="col-sm-5 col-md-offset-2" ng-show="showNewStrategy">
+                <div class="panel panel-info" class="click-element animate-show">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <div id="formTitle" ng-model="formTitle" style="padding:10px"> {{formTitle}}
+
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" name="form" novalidate ng-submit="form.$valid && submitStrategy()">
 
 
-
-
-
-
-
-
-
-            <div class="panel panel-info" class="click-element animate-show">
-                <table class="table-bordered table table-hover table-condensed">
-                    <thead>
-                    <tr class="info">
-
-                        <th>Name</th>
-
-
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="player in strategy.playerList">
-
-                        <td>
-                            <div>{{player.fullName}}</div>
-
-                        </td>
-
-                    </tr>
-                    </tbody>
-                </table>
-
-
-            </div>
-
-
-
-
-
-            <div class="panel panel-info" class="click-element animate-show">
-                <table class="table-bordered table table-hover table-condensed">
-                    <thead>
-                    <tr class="info">
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>No. of codes</th>
-
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
-                        <td>
-                            <div>{{strategyPlay.play.code}}</div>
-
-                        </td>
-                        <td>
-                            <div>{{strategyPlay.play.name}}</div>
-
-                        </td>
-                        <td >
-                            <div ng-class="{ 'has-error': strategyPlay.quantity==null && form2.$submitted}">
+                            <div class="form-group" ng-class="{ 'has-error': form.rows.$invalid && form.$submitted}">
+                                <label class="control-label col-xs-3" for="rows">Rows:</label>
                                 <div class="col-xs-5">
-
-                                    <input type="number" name="quantity" ng-model="strategyPlay.quantity"
-                                           class="form-control input-sm" required/>
+                                    <input type="text" id="rows" name="rows" ng-model="rows" value=""
+                                           class="form-control input-sm"
+                                           required>
                                 </div>
                             </div>
+
+
+                            <div class="form-group" ng-class="{ 'has-error': form.type.$invalid && form.$submitted}">
+                                <label class="control-label col-xs-3" for="type">Type:</label>
+                                <div class="col-xs-5">
+
+                                    <select id="type" name="type" value="type" ng-model="type" class="form-control input-sm"
+                                            required>
+                                        <option value="HIT">Hit</option>
+                                        <option value="PITCH">Pitch</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <br>
+                            <div style=" text-align: center;">
+
+
+                                <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                                       ng-click="goStrategy()">
+                                <input type="submit" tabindex="-1" class="btn btn-success" value="Continue">
+
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--GENERATOR-->
+            <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyPlayList">
+
+                <form class="form-horizontal" name="form2" novalidate
+                      ng-submit="form2.$valid && generateStrategy(strategy)">
+                    <div class="panel panel-info " class="click-element animate-show">
+
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <div id="formTitle2" ng-model="formTitle" style="padding:10px"> {{formTitle}}
+
+                                </div>
+                            </h3>
+                        </div>
+
+
+                        <div class="panel-body">
+
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="rows">Rows:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.rows}}
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="type">Type:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.type}}
+
+
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div style="text-align: center;">
+
+
+                                <input type="submit" tabindex="-1" class="btn btn-success" value="Generate">
+                                <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                                       ng-click="goStrategy()">
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel panel-info" class="click-element animate-show">
+                        <table class="table-bordered table table-hover table-condensed">
+                            <thead>
+                            <tr class="info">
+
+                                <th>Name</th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="player in strategy.playerList">
+
+                                <td>
+                                    <div>{{player.fullName}}</div>
+
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+
+                    <div class="panel panel-info" class="click-element animate-show">
+                        <table class="table-bordered table table-hover table-condensed">
+                            <thead>
+                            <tr class="info">
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>No. of codes</th>
+
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
+                                <td>
+                                    <div>{{strategyPlay.play.code}}</div>
+
+                                </td>
+                                <td>
+                                    <div>{{strategyPlay.play.name}}</div>
+
+                                </td>
+                                <td>
+                                    <div ng-class="{ 'has-error': strategyPlay.quantity==null && form2.$submitted}">
+                                        <div class="col-xs-5">
+
+                                            <input type="number" name="quantity" ng-model="strategyPlay.quantity"
+                                                   class="form-control input-sm" required/>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+
+                </form>
+            </div>
+
+
+            <!--MATRIX-->
+
+
+            <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyResult">
+                <div class="panel panel-info " class="click-element animate-show">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <div ng-model="formTitle" style="padding:10px"> {{formTitle}}
+
+                            </div>
+                        </h3>
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" name="form3" novalidate>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="rows">Date:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.date | date : 'MMM d, y HH:mm'}}
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="rows">Rows:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.rows}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="rows">Width:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.width}}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="type">Type:</label>
+                                <div class="col-xs-5">
+                                    {{strategy.type}}
+
+
+                                </div>
+                            </div>
+
+
+                            <br>
+
+                            <div style="text-align: center;">
+
+
+                                <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
+                                       ng-click="goStrategy()">
+
+
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </div>
+
+                <div ng-repeat="strategyMatrix in strategy.strategyMatrixList">
+                    <table id="matrix" class="table-bordered table table-condensed">
+                        <caption>Matrix for: {{ strategyMatrix.player.fullName }}</caption>
+                        <thead>
+                        <tr>
+                            <th ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListHeader"
+                                clas="panel-heading">
+                                {{ strategyMatrixCell.value }}
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+
+                        <tr ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListValue">
+                            <td ng-repeat="(key,val) in strategyMatrixCell" style="background-color:{{val.color}};">
+                                {{val.value}}
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <table id="list" class="table-bordered table table-condensed"
+                       aria-orientation="vertical">
+
+                    <caption>List</caption>
+                    <tbody>
+
+
+                    <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
+                        <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.code}}</td>
+                        <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.name}}</td>
+                        <td ng-repeat="(key,val) in strategyPlay.playCodeList"
+                            style="background-color:{{strategyPlay.play.color}};">{{val.position}}
                         </td>
-
-
                     </tr>
+
+
                     </tbody>
                 </table>
 
@@ -285,129 +448,19 @@
             </div>
 
 
-        </form>
-    </div>
-
-
-    <!--MATRIX-->
-
-
-    <div class="col-sm-5 col-md-offset-2" ng-show="showStrategyResult">
-        <div class="panel panel-info " class="click-element animate-show">
-
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <div ng-model="formTitle" style="padding:10px"> {{formTitle}}
-
-                    </div>
-                </h3>
-            </div>
-
-
-            <div class="panel-body">
-
-                <form class="form-horizontal" name="form3" novalidate >
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" for="rows">Rows:</label>
-                        <div class="col-xs-5">
-                            {{strategy.rows}}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" for="rows">Width:</label>
-                        <div class="col-xs-5">
-                            {{strategy.width}}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3" for="type">Type:</label>
-                        <div class="col-xs-5">
-                            {{strategy.type}}
-
-
-                        </div>
-                    </div>
-
-
-                    <br>
-
-                    <div style="text-align: center;">
-
-
-                        <input type="button" tabindex="-1" class="btn btn-default" value="Cancel"
-                               ng-click="goStrategy()">
-
-
-                    </div>
-                </form>
-
-            </div>
+            <!--SET NUMBER OF CODE TO PLAY-->
 
 
         </div>
 
-        <div  ng-repeat="strategyMatrix in strategy.strategyMatrixList">
-            <table id="matrix" class="table-bordered table table-condensed">
-            <caption>Matrix for:  {{ strategyMatrix.player.fullName }} </caption>
-            <thead>
-            <tr>
-                <th ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListHeader"
-                    clas="panel-heading">
-                    {{ strategyMatrixCell.value }}
-                </th>
-            </tr>
-            </thead>
-
-            <tbody>
-
-
-            <tr ng-repeat="strategyMatrixCell in strategyMatrix.strategyMatrixCellListValue">
-                <td ng-repeat="(key,val) in strategyMatrixCell" style="background-color:{{val.color}};">
-                    {{val.value}}
-                </td>
-            </tr>
-
-
-            </tbody>
-        </table>
-        </div>
-
-        <table id="list" class="table-bordered table table-condensed"
-               aria-orientation="vertical">
-
-            <caption>List</caption>
-            <tbody>
-
-
-            <tr ng-repeat="strategyPlay in strategy.strategyPlayList">
-                <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.code}}</td>
-                <td style="background-color:{{strategyPlay.play.color}};">{{strategyPlay.play.name}}</td>
-                <td ng-repeat="(key,val) in strategyPlay.playCodeList"
-                    style="background-color:{{strategyPlay.play.color}};">{{val.position}}
-                </td>
-            </tr>
-
-
-            </tbody>
-        </table>
-
-
-    </div>
-
-
-    <!--SET NUMBER OF CODE TO PLAY-->
-
-
 </div>
-</div>
+
 <div class="container">
     <div class="footer">
 
 
-            <h5>Powered by <a href="http://www.medellinjug.org" target="_blank">MedellinJUG.org</a></h5>
-            <h6>2017</h6>
+        <h5>Powered by <a href="http://www.medellinjug.org" target="_blank">MedellinJUG.org</a></h5>
+        <h6>2017</h6>
 
     </div>
 </div>

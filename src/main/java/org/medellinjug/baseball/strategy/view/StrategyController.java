@@ -51,7 +51,7 @@ public class StrategyController {
         }
     }
 
-    // Get employee by title
+    // Get plays by type and name
     @RequestMapping(method = RequestMethod.GET, value = "/play/plays/{type}&{name}")
     public ResponseEntity getByType(@PathVariable Play.Type type, @PathVariable String name) {
         List<Play> matchList = playServiceBean.getPlayssByType(type, name);
@@ -95,6 +95,29 @@ public class StrategyController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+
+    // Get all strategies
+    @RequestMapping(method = RequestMethod.GET, value = "/strategy")
+    public Strategy[] getStrategyAll() {
+
+        return strategyServiceBean.getStrategiesByType(null).toArray(new Strategy[0]);
+    }
+
+    // Get strategies by type
+    @RequestMapping(method = RequestMethod.GET, value = "/strategy/strategies/{type}")
+    public ResponseEntity getStrategiesByType(@PathVariable Play.Type type) {
+        List<Strategy> matchList = strategyServiceBean.getStrategiesByType(type);
+
+
+        if (matchList.size() > 0) {
+            return new ResponseEntity<>(matchList.toArray(new Strategy[0]), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
     // Get a new strategy
     @RequestMapping(method = RequestMethod.POST, value = "/strategy")

@@ -36,7 +36,7 @@ $scope.goHome = function(){
 			$scope.name = "";
 			$scope.type = null;
 
-			/*angular.element(document.getElementById("pic")).val(null);*/
+
 			$scope.showNewForm = true;
 			$scope.showPlayList = false;
 		}
@@ -114,21 +114,17 @@ $scope.goHome = function(){
 	
 	//Search Plays
 	$scope.searchPlays = function (){
-            $scope.playList = null;
+         $scope.playList = null;
 
         var params = "&"+$scope.searchText;
         if($scope.searchType!=null){
             params = $scope.searchType+"&"+$scope.searchText;
         }
-
-
-
-    		$http.get($scope.urlServicePlay+"/plays/"+params).
-    			then(function(response) {
-    				$scope.playList = response.data;
-
-    			});
-    	}
+        $http.get($scope.urlServicePlay+"/plays/"+params).
+            then(function(response) {
+                $scope.playList = response.data;
+            });
+    }
 
 	$scope.showDetailPlay = function(){
 		$scope.showDivs(false);
@@ -143,27 +139,70 @@ $scope.goHome = function(){
 
 /*Strategy controller*/
 
+
+
+
     $scope.goStrategy = function(){
 
-        $scope.formTitle = "Add New Strategy"
+        $scope.showNewStrategy = false;
+        $scope.showStrategyList = true;
 
+        $scope.showStrategyPlayList = false;
+        $scope.showStrategyResult = false;
+
+        $scope.rows = "";
+        $scope.type = null;
+        $scope.id = null;
+
+        $scope.searchStrategies();
+        /*
+        $scope.formTitle = "Add New Strategy"
         $scope.showNewStrategy = true;
         $scope.showStrategyPlayList = false;
         $scope.showStrategyResult = false;
 
         $scope.rows = "";
         $scope.type = null;
-
         $scope.id = null;
-
-
-         $scope.form.$setPristine();
+        $scope.form.$setPristine();*/
 	}
+
+	 $scope.goAddStrategy = function(){
+	    $scope.showStrategyList = false;
+        $scope.formTitle = "Add New Strategy"
+        $scope.showNewStrategy = true;
+        $scope.showStrategyPlayList = false;
+        $scope.showStrategyResult = false;
+
+        $scope.rows = "";
+        $scope.type = null;
+        $scope.id = null;
+        $scope.form.$setPristine();
+    }
+
+
+	//Search
+    $scope.searchStrategies = function (){
+
+        $scope.strategyList = null;
+        if($scope.searchType!=null && $scope.searchType!=""){
+            $http.get($scope.urlServiceStrategy+"/strategies/"+$scope.searchType).
+                then(function(response) {
+                    $scope.strategyList = response.data;
+            });
+        }else{
+
+            $http.get($scope.urlServiceStrategy).
+                then(function(response) {
+                    $scope.strategyList = response.data;
+            });
+
+        }
+
+    }
 
 	//Create a new or Update Strategy
     $scope.submitStrategy = function(){
-
-
         var addStrategy ={
                 rows:$scope.rows,
                 type:$scope.type
@@ -172,8 +211,6 @@ $scope.goHome = function(){
         var newStrategy = true;
         var id;
         if ($scope.id == null){
-
-
             res = $http.post($scope.urlServiceStrategy, JSON.stringify(addStrategy), {
                 headers: { 'Content-Type': 'application/json'}
                 });
@@ -184,14 +221,8 @@ $scope.goHome = function(){
                 headers: { 'Content-Type': 'application/json'}});
         }
 
-
-
         res.success(function(data, status, headers, config) {
             $scope.message = data;
-            /*$scope.getPlays();
-            $scope.showDivs(true);
-            */
-
 
             if(newStrategy){
 
@@ -203,16 +234,12 @@ $scope.goHome = function(){
                 $scope.showStrategyPlayList = true;
                 $scope.formTitle = "Generate Strategy"
                 $scope.showStrategyResult = false;
-
-
             } else{
-
                 $scope.formTitle = "Results of strategy"
                 $scope.showStrategyResult = true;
                 $scope.showStrategyPlayList = false;
                 $scope.getStrategyById($scope.id );
             }
-
         });
 
         res.error(function(data, status, headers, config) {
@@ -222,87 +249,36 @@ $scope.goHome = function(){
         );
     }
 
-
-	//Process a Strategy
-	$scope.processStrategy = function(){
-
-
-		var genStrategy ={
-          /*strategy:$scope.strategy,*/
-            id:$scope.id,
-            strategy:$scope.strategy
-         };
-
-		var res;
-		res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(genStrategy), {
-        				headers: { 'Content-Type': 'application/json'}
-        				});
-		/*
-		if ($scope.id == null){
-			res = $http.post($scope.urlServiceStrategy, JSON.stringify(addPlay), {
-				headers: { 'Content-Type': 'application/json'}
-				});
-		}else{
-			res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(addPlay), {
-				headers: { 'Content-Type': 'application/json'}});
-		}*/
-		res.success(function(data, status, headers, config) {
-			$scope.message = data;
-			$scope.getPlays();
-			$scope.showDivs(true);
-
-		});
-		res.error(function(data, status, headers, config) {
-			alert( "failure message: " + JSON.stringify({data: data}));
-		});
-
-		$scope.showNewStrategy = false;
-        $scope.showStrategyPlayList = false;
-        $scope.showStrategyResult = true;
-
-	}
-
 	//Get strategy by ID
 	$scope.getStrategyById = function(id){
-
 		$http.get($scope.urlServiceStrategy+"/"+id).
 			then(function(response) {
 			    $scope.strategy = response.data;
 			});
 		$scope.searchText = "";
+
+        $scope.showNewStrategy = false;
+        $scope.showStrategyPlayList = false;
+        $scope.showStrategyResult = true;
 	}
 
 
 	//Get strategyPlay by ID
 	$scope.getStrategyPlayById = function(idStrategy, idPlay){
-
-
 		$http.get($scope.urlServiceStrategy+"/play/"+idStrategy+"&"+idPlay).
 			then(function(response) {
 				$scope.strategyPlay = response.data;
 				$scope.quantity = $scope.strategyPlay.quantity;
-
 				$scope.showDetailStrategyPlay();
-
-
 			});
-
 	}
 
 	$scope.showDetailStrategyPlay = function(){
     		$scope.showStrategyPlay = true;
-
-    		/*$scope.id = $scope.play.id;
-    		$scope.code = $scope.play.code;
-    		$scope.name = $scope.play.name;
-    		$scope.type = $scope.play.type;
-            */
-    	}
-
+    }
 
     //Update strategyPlay
     $scope.submitStrategyPlay = function(){
-
 
         var updStrategyPlay ={
                   code:$scope.code,
@@ -320,31 +296,18 @@ $scope.goHome = function(){
 
         res.success(function(data, status, headers, config) {
             $scope.message = data;
-
             $scope.showStrategyPlay = false;
-
             $scope.getStrategyById($scope.strategyPlay.idStrategy);
-
-
-           // $("#strategyPlayModal").modal('hide');
         });
-
 
         res.error(function(data, status, headers, config) {
             alert( "failure message: " + JSON.stringify({data: data}));
         });
-
-
-
-
     }
 
     $scope.generateStrategy = function(strategy){
-
-
-                    $scope.modifyField = false;
-    				$scope.viewField = false;
-
+        $scope.modifyField = false;
+    	$scope.viewField = false;
 
         var genStrategy ={
           /*strategy:$scope.strategy,*/
@@ -358,7 +321,6 @@ $scope.goHome = function(){
             strategyPlayList:$scope.strategy.strategyPlayList
          };
 
-
         var res;
         res = $http.put($scope.urlServiceStrategy+"/"+$scope.id, JSON.stringify(genStrategy), {
                         headers: { 'Content-Type': 'application/json'}
@@ -371,40 +333,25 @@ $scope.goHome = function(){
         });
 
 
-
         res.error(function(data, status, headers, config) {
-
             alert( "failure message: " + JSON.stringify({data: data}));
         });
-
-
 
         $scope.showNewStrategy = false;
         $scope.showStrategyPlayList = false;
         $scope.showStrategyResult = true;
 
-
-
+        $scope.searchType = $scope.strategy.type;
+         $scope.formTitle = "Results of strategy"
 
       };
 
-
-
-
- $scope.modify = function(tableData){
-
+    $scope.modify = function(tableData){
         $scope.editingData[tableData.id] = true;
     };
 
-
     $scope.update = function(strategyPlay){
-
-       // $scope.editingData[strategyPlay.id] = false;
-
-
-
         $scope.strategyPlay = strategyPlay;
-
 
          var updStrategyPlay ={
 
@@ -424,25 +371,14 @@ $scope.goHome = function(){
 
                 res.success(function(data, status, headers, config) {
                     $scope.message = data;
-
                     $scope.showStrategyPlay = false;
-
                     $scope.getStrategyById($scope.strategyPlay.idStrategy);
-
-
-                   // $("#strategyPlayModal").modal('hide');
                 });
-
 
                 res.error(function(data, status, headers, config) {
                     alert( "failure message: " + JSON.stringify({data: data}));
                 });
-
-
     };
-
-
-
 
     $scope.showDivPlayer = function(playerList){
         if (playerList){
@@ -464,21 +400,14 @@ $scope.goHome = function(){
             $scope.showPlayerList = false;
 
             $scope.playList = null;
-
-
-
         }
     }
-  $scope.changePlayerType = function(){
 
-        $scope.searchType= $scope.type;
-        $scope.searchText="";
-        $scope.searchPlays();
-
-
-  }
-
-
+      $scope.changePlayerType = function(){
+            $scope.searchType= $scope.type;
+            $scope.searchText="";
+            $scope.searchPlays();
+      }
 
 //add/update player
     $scope.submitPlayer = function(){
@@ -575,10 +504,7 @@ $scope.goHome = function(){
 //https://material.angularjs.org/latest/demo/checkbox
     }
 
-
-
-
-   $scope.checkPlaySelected = function (play, playList){
+    $scope.checkPlaySelected = function (play, playList){
         var i=0, len=playList.length;
         for (; i<len; i++) {
           if (playList[i].code == play.code) {
@@ -587,7 +513,6 @@ $scope.goHome = function(){
         }
         return false;
     }
-
 
     $scope.togglePlay = function (play, playList) {
         var idx = -1;
@@ -614,11 +539,8 @@ $scope.goHome = function(){
     };
 
     $scope.checkSelected = function (item, list){
-
         return list.indexOf(item) > -1;
-
     }
-
 
     $scope.toggle = function (item, list) {
         var idx = list.indexOf(item);
@@ -630,7 +552,6 @@ $scope.goHome = function(){
           list.push(item);
         }
     };
-
 
     //Search Players
     $scope.searchPlayers = function (){

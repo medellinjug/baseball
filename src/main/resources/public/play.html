@@ -22,10 +22,11 @@
     .container {
       width: 90%;
       margin: auto;
-	  display: flex;
+	  /*display: flex;*/
+
     }
     
-    .peopleContent {
+    .playContent {
       flex-grow: 1;
     }
     
@@ -33,7 +34,7 @@
       width: 120px;
     }
     
-    .peopleItem {
+    .playItem {
       width: 350px;
       border: 1px solid #777777;
       background: #FAFAFA;
@@ -42,7 +43,7 @@
       display: flex;
     }
     
-    .peopleTitle {
+    .playTitle {
       width: 100%;
       background: #FAFAFA;
       margin: 3px;
@@ -69,9 +70,9 @@
         <h2>Cloud Baseball App</h2>
     </div>
 </div>
+<div class="container">
 
-<div class="row">
-<div ng-controller="Baseball" ng-init="getPlays()">
+    <div ng-controller="Baseball" ng-init="getPlays()">
 
     <div class="click-element animate-show" ng-show="showPlayList">
         <h2>Plays</h2>
@@ -82,7 +83,7 @@
             </div>
             <div class="col-xs-2">
                 <select id="searchType" class="form-control" ng-model="searchType">
-                    <option value="">----Select----</option>
+                    <option value=""></option>
                     <option value="HIT">Hit</option>
                     <option value="PITCH">Pitch</option>
 
@@ -94,7 +95,7 @@
                 </button>
             </div>
             <div class="col-xs-4">
-                <button class="btn btn-danger" id="homeButton" type="button" ng-click="getPlays()">
+                <button class="btn btn-danger" id="homeButton" type="button" ng-click="goHome()()">
                     <span class="glyphicon glyphicon-home"></span>
                 </button>
             </div>
@@ -106,12 +107,12 @@
 
     </div>
     </br></br>
-    <div id="people" class="container" class="click-element animate-show" ng-show="showPlayList">
+    <div id="play" class="container" class="click-element animate-show" ng-show="showPlayList">
         <div class="row">
-            <div class="peopleItem col-sm-3" ng-repeat="play in playList" ng-click="getPlayById(play.id)"
+            <div class="playItem col-sm-3" ng-repeat="play in playList" ng-click="getPlayById(play.id)"
                  style="cursor: pointer">
 
-                <div class="peopleContent">
+                <div class="playContent">
                     <h4>{{play.id}} {{play.code}} {{play.name}}</h4>
                     {{play.type}}<br>
 
@@ -174,8 +175,6 @@
 
 
 </div>
-
-
 
 </div>
 

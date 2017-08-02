@@ -192,60 +192,12 @@ public class PlaysReader {
 
     public static void createPlayerss(){
 
-        //ObjectMapper mapper   = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter().withoutAttribute("playList").withoutAttribute("id");
-
-
-        /*
-
-        String[] ignorableFieldNames = { "id", "playList" };
-        FilterProvider filters = new SimpleFilterProvider()
-                .addFilter("filter properties by name",
-                        SimpleBeanPropertyFilter.serializeAllExcept(
-                                ignorableFieldNames));*/
-
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        //mapper.setFilterProvider(filters);
-
-
-
-       // ObjectWriter writer = mapper.writer(filters);
-
-
-
-        //FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter",SimpleBeanPropertyFilter.filterOutAllExcept("name"));
-// and then serialize using that filter provider:
-//http://www.agile-code.com/blog/how-to-use-jackson-data-binding-api-in-java-web-development/
 
         try {
-
-
             mapper.writerWithView(PlayerView.All.class).writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
 
-/*
-            writer.writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray());
-
-            String jsonInString = writer.writeValueAsString(PlaysReader.ePlayerList.toArray());
-            System.out.println(jsonInString);
-            System.out.println("*************************************");
-
-
-
-            String jsonInString2 = writer.withoutAttribute("playList").withoutAttribute("id").writeValueAsString(PlaysReader.ePlayerList.get(0));
-            System.out.println(jsonInString2);
-
-
-            Player player = PlaysReader.ePlayerList.get(0);
-            String dtoAsString = mapper.writer(filters).writeValueAsString(player);
-            System.out.println(dtoAsString);*/
-            /*
-            HC works OK but we need no print id and playList
-            ObjectMapper mapper = new ObjectMapper();
-            mapper .writerWithDefaultPrettyPrinter().withoutAttribute("playList").withoutAttribute("id")
-                    .writeValue(new File(PlaysReader.filePathString), PlaysReader.ePlayerList.toArray())
-            ;*/
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
